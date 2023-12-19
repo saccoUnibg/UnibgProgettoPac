@@ -10,6 +10,10 @@ public class HomeController {
     @Value("${spring.application.name}")
     String appName;
 
+    @GetMapping("/")
+    public String mainPage(Model model){
+        return "main";
+    }
     @GetMapping("/welcome")
     public String homePage(Model model) {
         model.addAttribute("appName", appName);
