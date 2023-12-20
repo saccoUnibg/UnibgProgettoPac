@@ -27,6 +27,10 @@ public class HomeController {
 }
 
 /*
+ciao ciao
+ */
+
+/*
 @Controller
 public class SimpleController {
     @Value("${spring.application.name}")
