@@ -6,8 +6,12 @@
 <body>
 <h1>Main page</h1>
 <p>Prima pagina da visualizzare.</p>
-<p>It contains a
-    <strong>main heading</strong> and <em> paragraph </em>.
-</p>
+<form action="/welcome">
+    <label for="nome">Nome: </label>
+    <input type="text" id="nome" name="nome"><br><br>
+    <label for="cognome">Cognome: </label>
+    <input type="text" id="cognome" name="cognome"><br><br>
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>
