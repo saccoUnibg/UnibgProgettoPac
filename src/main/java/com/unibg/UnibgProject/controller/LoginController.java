@@ -28,9 +28,8 @@ public class LoginController {
         return "registrazione";
     }
 
-
     @PostMapping("/registrazioneform")
-    public String registrazioneSent(@ModelAttribute("utente") Utente utente, Model model) {
+    public String registrazioneForm(@ModelAttribute("utente") Utente utente) {
         UtenteEntity utenteEntity = new UtenteEntity();
         try{
             BeanUtils.copyProperties(utente,utenteEntity);
@@ -50,6 +49,11 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
+        return "login";
+    }
+
+    @GetMapping("/loginform")
+    public String loginForm(@ModelAttribute("utente") Utente utente) {
         return "login";
     }
 }
