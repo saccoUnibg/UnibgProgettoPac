@@ -1,0 +1,22 @@
+
+
+
+CREATE TABLE public.prenotazioni (
+
+);
+
+CREATE TABLE public.utenti (
+	nome varchar NULL,
+	cognome varchar(20) NULL,
+	id int4 DEFAULT nextval('persone_id_seq'::regclass) NOT NULL,
+	mail varchar(50) NULL,
+	psw varchar(50) NULL,
+	CONSTRAINT persone_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.voli (
+	departure_from varchar(50) NULL,
+	id_persona varchar(20) NULL,
+	id serial4 NOT NULL,
+	CONSTRAINT voli_pkey PRIMARY KEY (id)
+);
