@@ -5,7 +5,9 @@ import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.repository.UtenteRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,15 +28,20 @@ public class LoginController {
         return "registrazione";
     }
 
-
     @PostMapping("/registrazioneform")
-    public String registrazioneSent(@ModelAttribute("utente") Utente utente) {
+    public String registrazioneForm(@ModelAttribute("utente") Utente utente, Model model) {
         UtenteEntity utenteEntity = new UtenteEntity();
-        try{
+        try {
             BeanUtils.copyProperties(utente,utenteEntity);
             utenteRepository.save(utenteEntity);
+            model.addAttribute(utente);
             return "registrazionesuccess";
-        }catch (Exception e){
+        } catch (DataIntegrityViolationException e) {
+            if(utenteRepository.findByMail(utenteEntity.getMail()) !=null) {
+                model.addAttribute("error","Errore nella registrazione dell'utenza: mail già registrata.");
+            } else {
+                model.addAttribute("error","Errore nella registrazione dell'utenza: contattare assistenza.");
+            }
             return "registrazionefail";
         }
     }
@@ -42,6 +49,20 @@ public class LoginController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @PostMapping("/loginform")
+    public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
+        UtenteEntity utenteEntity = new UtenteEntity();
+        try{
+            BeanUtils.copyProperties(utente,utenteEntity);
+            utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utenteEntity.getPsw());
+
+            model.addAttribute("utente",utenteEntity);
+        } catch(Exception e){
+            model.addAttribute("error","Errore di login.");
+        }
+        return "profilehomepage";
     }
 }
 
