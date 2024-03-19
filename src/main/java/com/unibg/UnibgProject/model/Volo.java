@@ -9,11 +9,12 @@ import lombok.Setter;
 public class Volo {
 
     private String id;
-    private String aeroporto_partenza;
-    private String aeroporto_arrivo;
+    private String partenza;
+    private String arrivo;
     private String data;
     private String compagnia;
-    private String orario;
+    private String h_partenza;
+    private String h_arrivo;
     private String prezzo;
 
 }

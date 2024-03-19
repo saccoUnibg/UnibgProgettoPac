@@ -31,8 +31,7 @@ public class LoginServiceImpl implements LoginService {
 
     public UtenteEntity login(Utente utente){
         UtenteEntity utenteEntity = new UtenteEntity();
-        BeanUtils.copyProperties(utente,utenteEntity);
-        utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utenteEntity.getPsw());
+        utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utente.getPsw());
         return utenteEntity;
     }
 

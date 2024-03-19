@@ -20,7 +20,12 @@ public class VoliController {
     VoliService voliService;
 
     @GetMapping("/ricerca")
-    public String ricercaVoli(@ModelAttribute("ricerca") Ricerca ricerca, Model model){
+    public String ricercaVoli(){
+        return "listavoli";
+    }
+
+    @GetMapping("/lista")
+    public String listaVoli(@ModelAttribute("ricerca") Ricerca ricerca, Model model){
         try{
             List<VoloEntity> listaVoli = voliService.ricercaVoli(ricerca);
             model.addAttribute("listavoli",listaVoli);
@@ -29,6 +34,5 @@ public class VoliController {
         }
         return "ricercavoli";
     }
-
-
+    
 }

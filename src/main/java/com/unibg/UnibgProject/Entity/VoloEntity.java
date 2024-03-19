@@ -21,9 +21,9 @@ public class VoloEntity {
     @Column
     private String compagnia;
     @Column
-    private String orario;
-    @Column
     private String h_partenza;
     @Column
     private String h_arrivo;
+    @Column
+    private String prezzo;
 }
