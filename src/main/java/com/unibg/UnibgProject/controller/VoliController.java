@@ -21,7 +21,7 @@ public class VoliController {
 
     @GetMapping("/ricerca")
     public String ricercaVoli(){
-        return "listavoli";
+        return "ricercavoli";
     }
 
     @GetMapping("/lista")
@@ -32,7 +32,7 @@ public class VoliController {
         } catch(Exception e){
             return "ricercavoli_error";
         }
-        return "ricercavoli";
+        return "listavoli";
     }
-    
+
 }
