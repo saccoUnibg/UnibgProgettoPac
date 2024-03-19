@@ -29,15 +29,14 @@ public class LoginController {
     }
 
     @PostMapping("/registrazioneform")
-    public String registrazioneForm(@ModelAttribute("utente") Utente utente) {
+    public String registrazioneForm(@ModelAttribute("utente") Utente utente, Model model) {
         UtenteEntity utenteEntity = new UtenteEntity();
-        try{
+        try {
             BeanUtils.copyProperties(utente,utenteEntity);
             utenteRepository.save(utenteEntity);
             model.addAttribute(utente);
             return "registrazionesuccess";
-        }catch (DataIntegrityViolationException e) {
-            String error = e.toString();
+        } catch (DataIntegrityViolationException e) {
             if(utenteRepository.findByMail(utenteEntity.getMail()) !=null) {
                 model.addAttribute("error","Errore nella registrazione dell'utenza: mail già registrata.");
             } else {
@@ -52,9 +51,18 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/loginform")
-    public String loginForm(@ModelAttribute("utente") Utente utente) {
-        return "login";
+    @PostMapping("/loginform")
+    public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
+        UtenteEntity utenteEntity = new UtenteEntity();
+        try{
+            BeanUtils.copyProperties(utente,utenteEntity);
+            utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utenteEntity.getPsw());
+
+            model.addAttribute("utente",utenteEntity);
+        } catch(Exception e){
+            model.addAttribute("error","Errore di login.");
+        }
+        return "profilehomepage";
     }
 }
 
