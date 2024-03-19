@@ -5,8 +5,28 @@
     <title>Login success</title>
 </head>
 <body>
-  <h1>Login avvenuto con successo</h1>
-  <ul th:text="${utente.mail}"></ul>
+  <h1>Benvenuto nella tua pagina personale!</h1>
+
+  <a href="/voli/ricerca">
+      <button>Inizia una nuova ricerca</button>
+  </a>
+  <br>
+  <a href="/prenotazioni/gestione">
+      <button>gestisci i tuoi voli</button>
+  </a>
+
+  <h2>Anagrafica utente</h2>
+  <h4>Nome: </h4> <ul th:text="${utente.nome}"></ul>
+
+  <h4>Cognome: </h4>  <ul th:text="${utente.cognome}"></ul>
+
+  <h4>Indirizzo E-mail: </h4> <ul th:text="${utente.mail}"></ul>
+
+  <h4>Codice fiscale: </h4> <ul th:text="${utente.cf}"></ul>
+
+  <a href="/anagrafica/modifica">
+      <button>modifica i tuoi dati</button>
+  </a>
 
 </body>
 </html>
