@@ -19,7 +19,7 @@ public class VoliServiceImpl implements VoliService {
 
     @Override
     public List<VoloEntity> ricercaVoli(Ricerca ricerca) {
-        return voliRepository.findByPartenzaAndArrivoAndData(ricerca.getPartenza(),ricerca.getArrivo(),ricerca.getData());
+        return voliRepository.findByPartenzaAndArrivoIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getArrivo(),ricerca.getData());
     }
 
 }

@@ -17,7 +17,7 @@ public class LoginController {
     LoginService loginService;
     @GetMapping("")
     public String homePage() {
-        return "homepage";
+        return "index";
     }
 
     @GetMapping("/registrazione")
@@ -42,7 +42,7 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/loginform")
+    @PostMapping("/profilehomepage")
     public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
         try{
             UtenteEntity utenteEntity = loginService.login(utente);
@@ -58,5 +58,5 @@ public class LoginController {
 /*
 relazione d'azienda (documento) --> condividere database con prof.ssa
 + ricreare situazioni
-inserisco prodotti, clienti, acquisto e vendita materiale,
+inserisco prodotti, clienti, acquisto e vendita materiale, etc.
  */

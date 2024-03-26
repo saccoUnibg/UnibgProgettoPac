@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface VoliRepository extends CrudRepository<VoloEntity,Integer> {
-    List<VoloEntity> findByPartenzaAndArrivoAndData(String partenza, String arrivo, String data);
+    List<VoloEntity> findByPartenzaAndArrivoIgnoreCaseAndData(String partenza, String arrivo,String data);
 
 }

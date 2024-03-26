@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Voli</title>
+</head>
+<body>
+<h2>Lista voli</h2>
+<table align="center">
+    <thead>
+    <tr>
+        <th> Partenza </th>
+        <th> Arrivo </th>
+        <th> Ora partenza </th>
+        <th> Ora Arrivo </th>
+        <th> Compagnia </th>
+        <th> Prezzo </th>
+        <th> Numero Persone </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${listavoli.empty}">
+        <td colspan="2"> Nessun volo disponibile </td>
+    </tr>
+    <tr th:each="volo : ${listavoli}">
+        <td><span th:text="${volo.partenza}"> Partenza </span></td>
+        <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
+        <td><span th:text="${volo.h_partenza}"> Ora partenza </span></td>
+        <td><span th:text="${volo.h_arrivo}"> Ora arrivo </span></td>
+        <td><span th:text="${volo.compagnia}"> Compagnia </span></td>
+        <td><span th:text="${volo.prezzo}"> Prezzo </span></td>
+        <td>
+            <input type="range" name= "numero_persone" value="1" min="0" max="5" oninput="this.nextElementSibling.value = this.value">
+            <output>1</output>
+        </td>
+        <td>
+            <div align="center">
+                <form action="#" th:action="@{/prenotazioni/crea}" method="post" modelAttribute="prenotazione">
+                    <div class="container">
+                        <button type="submit" class="registerbtn">Prenota</button>
+                    </div>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
