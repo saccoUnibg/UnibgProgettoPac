@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Prenotazione</title>
+</head>
+<body>
+    <div>
+        <form action="#" th:action="@{/prenotazioni/salva}" method="post" modelAttribute="utente">
+            <div class="container" align="center">
+
+                <h1>Prenotazione</h1>
+                <h4>Partenza: </h4> <ul th:text="${volo.partenza}"></ul>
+                <h4>Arrivo: </h4>  <ul th:text="${volo.arrivo}"></ul>
+                <h4>Compagnia: </h4> <ul th:text="${volo.compagnia}"></ul>
+                <h4>Prezzo: </h4> <ul th:text="${volo.prezzo}"></ul>
+                <hr>
+                <label>Email</label>
+                <input type="text" placeholder="mail" name="mail" required>
+                <hr>
+            </div>
+            <div class="container" align="center">
+                <label>Numero Biglietti</label><br>
+                <input type="number" name="numero_biglietti" min="1" max="5" size="20"/> <br>
+                <button type="submit" class="registerbtn">Prenota volo</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

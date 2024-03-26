@@ -35,7 +35,7 @@
         </td>
         <td>
             <div align="center">
-                <form action="#" th:action="@{/prenotazioni/crea}" method="post" modelAttribute="prenotazione">
+                <form action="#" th:action="@{/prenotazioni/crea}" method="post" th:object="${listavoli}">
                     <div class="container">
                         <button type="submit" class="registerbtn">Prenota</button>
                     </div>
