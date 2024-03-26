@@ -10,6 +10,6 @@ public class Prenotazione {
     private String id_volo;
     private String numero_biglietti;
     private String mail;
-    private String prezzo_totale;
+    private String spesa_totale;
 
 }
