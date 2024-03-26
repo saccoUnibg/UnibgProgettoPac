@@ -30,14 +30,16 @@
         <td><span th:text="${volo.compagnia}"> Compagnia </span></td>
         <td><span th:text="${volo.prezzo}"> Prezzo </span></td>
         <td>
-            <input type="range" name= "numero_persone" value="1" min="0" max="5" oninput="this.nextElementSibling.value = this.value">
-            <output>1</output>
-        </td>
-        <td>
             <div align="center">
-                <form action="#" th:action="@{/prenotazioni/crea}" method="post" th:object="${listavoli}">
+                <form action="#" th:action="@{/prenotazioni/crea}" method="post" th:object="${volo}">
                     <div class="container">
-                        <button type="submit" class="registerbtn">Prenota</button>
+                        <input type="hidden" th:value="${volo.partenza}" name="partenza">
+                        <input type="hidden" th:value="${volo.arrivo}" name="arrivo">
+                        <input type="hidden" th:value="${volo.h_partenza}" name="h_partenza">
+                        <input type="hidden" th:value="${volo.h_arrivo}" name="h_arrivo">
+                        <input type="hidden" th:value="${volo.compagnia}" name="compagnia">
+                        <input type="hidden" th:value="${volo.prezzo}" name="prezzo">
+                        <button type="submit">Prenota</button>
                     </div>
                 </form>
             </div>

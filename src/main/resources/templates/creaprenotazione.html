@@ -10,10 +10,18 @@
             <div class="container" align="center">
 
                 <h1>Prenotazione</h1>
-                <h4>Partenza: </h4> <ul th:text="${volo.partenza}"></ul>
-                <h4>Arrivo: </h4>  <ul th:text="${volo.arrivo}"></ul>
-                <h4>Compagnia: </h4> <ul th:text="${volo.compagnia}"></ul>
-                <h4>Prezzo: </h4> <ul th:text="${volo.prezzo}"></ul>
+                <b >Partenza: </b>
+                <i th:text="${volo.partenza}"></i>
+                <br><br>
+                <b>Arrivo: </b>
+                <i th:text="${volo.arrivo}"></i>
+                <br><br>
+                <b>Compagnia: </b>
+                <i th:text="${volo.compagnia}"></i>
+                <br><br>
+                <b>Prezzo: </b>
+                <i th:text="${volo.prezzo}"></i>
+                <br><br>
                 <hr>
                 <label>Email</label>
                 <input type="text" placeholder="mail" name="mail" required>
@@ -21,8 +29,8 @@
             </div>
             <div class="container" align="center">
                 <label>Numero Biglietti</label><br>
-                <input type="number" name="numero_biglietti" min="1" max="5" size="20"/> <br>
-                <button type="submit" class="registerbtn">Prenota volo</button>
+                <input type="number" name="numero_biglietti" min="1" max="5" value="1" size="20"/> <br>
+                <button type="submit" class="registerbtn">Avanti</button>
             </div>
         </form>
     </div>
