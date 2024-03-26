@@ -2,10 +2,8 @@ package com.unibg.UnibgProject.controller;
 
 import com.unibg.UnibgProject.Entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
-import com.unibg.UnibgProject.repository.UtenteRepository;
-import org.springframework.beans.BeanUtils;
+import com.unibg.UnibgProject.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     @Autowired
-    UtenteRepository utenteRepository;
-
+    LoginService loginService;
     @GetMapping("")
     public String homePage() {
-        return "homepage";
+        return "index";
     }
 
     @GetMapping("/registrazione")
@@ -30,18 +27,12 @@ public class LoginController {
 
     @PostMapping("/registrazioneform")
     public String registrazioneForm(@ModelAttribute("utente") Utente utente, Model model) {
-        UtenteEntity utenteEntity = new UtenteEntity();
         try {
-            BeanUtils.copyProperties(utente,utenteEntity);
-            utenteRepository.save(utenteEntity);
-            model.addAttribute(utente);
+            UtenteEntity utenteEntity = loginService.saveRegistrazione(utente);
+            model.addAttribute("utente",utenteEntity);
             return "registrazionesuccess";
-        } catch (DataIntegrityViolationException e) {
-            if(utenteRepository.findByMail(utenteEntity.getMail()) !=null) {
-                model.addAttribute("error","Errore nella registrazione dell'utenza: mail già registrata.");
-            } else {
-                model.addAttribute("error","Errore nella registrazione dell'utenza: contattare assistenza.");
-            }
+        } catch(Exception e){
+            model.addAttribute("error",e.toString());
             return "registrazionefail";
         }
     }
@@ -51,16 +42,14 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/loginform")
+    @PostMapping("/profilehomepage")
     public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
-        UtenteEntity utenteEntity = new UtenteEntity();
         try{
-            BeanUtils.copyProperties(utente,utenteEntity);
-            utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utenteEntity.getPsw());
-
+            UtenteEntity utenteEntity = loginService.login(utente);
             model.addAttribute("utente",utenteEntity);
         } catch(Exception e){
             model.addAttribute("error","Errore di login.");
+            return "loginerror";
         }
         return "profilehomepage";
     }
@@ -69,5 +58,5 @@ public class LoginController {
 /*
 relazione d'azienda (documento) --> condividere database con prof.ssa
 + ricreare situazioni
-inserisco prodotti, clienti, acquisto e vendita materiale,
+inserisco prodotti, clienti, acquisto e vendita materiale, etc.
  */
