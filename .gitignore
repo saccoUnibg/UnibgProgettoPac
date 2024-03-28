@@ -27,3 +27,8 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 .factorypath
+
+.idea/
+.DS_Store
+target/
+.metadata/
