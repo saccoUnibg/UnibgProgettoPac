@@ -7,7 +7,7 @@ import com.unibg.UnibgProject.model.Prenotazione;
 public interface PrenotazioneService {
 
 
-    void savePrenotazione(Prenotazione prenotazione);
+    Long savePrenotazione(Prenotazione prenotazione);
 
     void saveCheckin(Checkin checkin);
 }
