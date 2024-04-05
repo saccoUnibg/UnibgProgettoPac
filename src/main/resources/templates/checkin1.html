@@ -22,10 +22,9 @@
 
             <label><b>Numero documento</b></label><br>
             <input type="text" name="id_documento" size="15"/><br><br>
-            <input type="hidden" name="id_prenotazione" th:value="${prenotazione.id}">
-            <input type="hidden" th:value="${prenotazione.mail}" name="mail"/>
-            <hr>
 
+            <input type="hidden" name="id_prenotazione" th:value="${prenotazione.id}">
+            <hr>
             <button type="submit" class="registerbtn">Registra viaggiatore</button>
         </div>
     </form>

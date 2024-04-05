@@ -4,7 +4,9 @@ import com.unibg.UnibgProject.Entity.CheckinEntity;
 import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
 import com.unibg.UnibgProject.model.Checkin;
 import com.unibg.UnibgProject.model.Prenotazione;
+import com.unibg.UnibgProject.repository.CheckinRepository;
 import com.unibg.UnibgProject.repository.PrenotazioneRepository;
+import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
     @Autowired
     PrenotazioneRepository prenotazioneRepository;
+    @Autowired
+    CheckinRepository checkinRepository;
 
     @Override
     public Long savePrenotazione(Prenotazione prenotazione) {
@@ -28,6 +32,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
     public void saveCheckin(Checkin checkin) {
         CheckinEntity checkinEntity = new CheckinEntity();
         BeanUtils.copyProperties(checkin,checkinEntity);
-
+        checkinRepository.save(checkinEntity);
     }
 }

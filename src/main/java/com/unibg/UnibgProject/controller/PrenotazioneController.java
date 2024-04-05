@@ -1,10 +1,17 @@
 package com.unibg.UnibgProject.controller;
 
+import com.unibg.UnibgProject.Entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Checkin;
 import com.unibg.UnibgProject.model.Prenotazione;
+import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.model.Volo;
+import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +24,9 @@ public class PrenotazioneController {
 
     @Autowired
     PrenotazioneService prenotazioneService;
+
+    @Autowired
+    LoginService loginService;
 
     @PostMapping("/crea")
     public String creaPrenotazione(@ModelAttribute("volo") Volo volo, Model model) {
@@ -39,9 +49,14 @@ public class PrenotazioneController {
     }
 
     @PostMapping("/success")
-    public String saveCheckin(@ModelAttribute("checkin") Checkin checkin, Model model) {
+    public String saveCheckin(@ModelAttribute("checkin") Checkin checkin, HttpSession session, Model model) {
         try{
             prenotazioneService.saveCheckin(checkin);
+            String mail=(String) session.getAttribute("mail");
+            UtenteEntity utenteEntity = loginService.findByMail(mail);
+            Utente utente = new Utente();
+            BeanUtils.copyProperties(utenteEntity,utente);
+            model.addAttribute(utente);
         } catch(Exception e){
             return "error";
         }

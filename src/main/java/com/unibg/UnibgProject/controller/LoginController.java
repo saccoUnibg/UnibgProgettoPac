@@ -3,6 +3,7 @@ package com.unibg.UnibgProject.controller;
 import com.unibg.UnibgProject.Entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,10 +44,16 @@ public class LoginController {
     }
 
     @PostMapping("/profilehomepage")
-    public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
+    public String loginForm(@ModelAttribute("utente") Utente utente, Model model, HttpSession session) {
         try{
-            UtenteEntity utenteEntity = loginService.login(utente);
-            model.addAttribute("utente",utenteEntity);
+            UtenteEntity utenteEntity;
+            if(session.getAttribute("mail")==null) {
+                utenteEntity = loginService.login(utente);
+                session.setAttribute("mail", utente.getMail());
+            } else{
+                utenteEntity = loginService.findByMail( (String) session.getAttribute("mail"));
+            }
+            model.addAttribute("utente", utenteEntity);
         } catch(Exception e){
             model.addAttribute("error","Errore di login.");
             return "loginerror";
