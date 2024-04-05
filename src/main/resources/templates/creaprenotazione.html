@@ -8,7 +8,6 @@
     <div>
         <form action="#" th:action="@{/prenotazioni/check-in}" method="post" modelAttribute="utente">
             <div class="container" align="center">
-
                 <h1>Prenotazione</h1>
                 <b >Partenza: </b>
                 <i th:text="${volo.partenza}"></i>
@@ -23,13 +22,14 @@
                 <i th:text="${volo.prezzo}"></i>
                 <br><br>
                 <hr>
+            </div>
+            <hr>
+            <div class="container" align="center">
                 <label>Email</label>
                 <input type="text" placeholder="mail" name="mail" required>
-                <hr>
-            </div>
-            <div class="container" align="center">
+                <br>
                 <label>Numero Biglietti</label><br>
-                <input type="number" name="numero_biglietti" min="1" max="5" value="1" size="20"/> <br>
+                <input type="number" name="numero_biglietti" min="1" max="3" value="1" size="20"/> <br>
                 <input type="hidden" th:value="${volo.id}" name="id_volo">
                 <input type="hidden" name="mail">
                 <button type="submit" class="registerbtn">Avanti</button>

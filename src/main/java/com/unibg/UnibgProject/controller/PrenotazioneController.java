@@ -29,10 +29,11 @@ public class PrenotazioneController {
         try{
             prenotazioneService.savePrenotazione(prenotazione);
             model.addAttribute(prenotazione);
+
         } catch(Exception e){
             return "error";
         }
-        return "checkin";
+        return "checkin".concat(prenotazione.getNumero_biglietti());
     }
 
     @PostMapping("/check-in/end")
