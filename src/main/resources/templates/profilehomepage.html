@@ -5,28 +5,29 @@
     <title>Login success</title>
 </head>
 <body>
-  <h1>Benvenuto nella tua pagina personale!</h1>
+    <div align="center">
+          <h1>Benvenuto nella tua pagina personale!</h1>
 
-  <a href="/voli/ricerca">
-      <button>Inizia una nuova ricerca</button>
-  </a>
-  <br>
-  <a href="/prenotazioni/gestione">
-      <button>gestisci i tuoi voli</button>
-  </a>
+          <a href="/voli/ricerca">
+              <button>Inizia una nuova ricerca</button>
+          </a>
+          <br>
+          <a href="/prenotazioni/gestione">
+              <button>gestisci i tuoi voli</button>
+          </a>
 
-  <h2>Anagrafica utente</h2>
-  <h4>Nome: </h4> <ul th:text="${utente.nome}"></ul>
+          <h2>Anagrafica utente</h2>
+          <h4>Nome: </h4> <ul th:text="${utente.nome}"></ul>
 
-  <h4>Cognome: </h4>  <ul th:text="${utente.cognome}"></ul>
+          <h4>Cognome: </h4>  <ul th:text="${utente.cognome}"></ul>
 
-  <h4>Indirizzo E-mail: </h4> <ul th:text="${utente.mail}"></ul>
+          <h4>Indirizzo E-mail: </h4> <ul th:text="${utente.mail}"></ul>
 
-  <h4>Codice fiscale: </h4> <ul th:text="${utente.cf}"></ul>
+          <h4>Codice fiscale: </h4> <ul th:text="${utente.cf}"></ul>
 
-  <a href="/anagrafica/modifica">
-      <button>modifica i tuoi dati</button>
-  </a>
-
+          <a href="/anagrafica/modifica">
+              <button>modifica i tuoi dati</button>
+          </a>
+    </div>
 </body>
 </html>

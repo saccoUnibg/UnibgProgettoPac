@@ -17,10 +17,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
     PrenotazioneRepository prenotazioneRepository;
 
     @Override
-    public void savePrenotazione(Prenotazione prenotazione) {
+    public Long savePrenotazione(Prenotazione prenotazione) {
         PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
         BeanUtils.copyProperties(prenotazione,prenotazioneEntity);
-        prenotazioneRepository.save(prenotazioneEntity);
+        prenotazioneEntity = prenotazioneRepository.save(prenotazioneEntity);
+        return prenotazioneEntity.getId();
     }
 
     @Override

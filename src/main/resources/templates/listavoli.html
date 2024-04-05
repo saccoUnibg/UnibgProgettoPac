@@ -15,14 +15,13 @@
         <th> Ora Arrivo </th>
         <th> Compagnia </th>
         <th> Prezzo </th>
-        <th> Numero Persone </th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${listavoli.empty}">
         <td colspan="2"> Nessun volo disponibile </td>
     </tr>
-    <tr th:each="volo : ${listavoli}">
+    <tr th:each="volo : ${listavoli}" align="center">
         <td><span th:text="${volo.partenza}"> Partenza </span></td>
         <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
         <td><span th:text="${volo.h_partenza}"> Ora partenza </span></td>

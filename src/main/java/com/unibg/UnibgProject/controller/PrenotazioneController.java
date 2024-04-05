@@ -27,7 +27,9 @@ public class PrenotazioneController {
     @PostMapping("/check-in")
     public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, Model model) {
         try{
-            prenotazioneService.savePrenotazione(prenotazione);
+            //salvo la prenotazione e prelevo l'id da portare nel check-in
+            String id_prenotazione = String.valueOf(prenotazioneService.savePrenotazione(prenotazione));
+            prenotazione.setId(id_prenotazione);
             model.addAttribute(prenotazione);
 
         } catch(Exception e){
@@ -36,7 +38,7 @@ public class PrenotazioneController {
         return "checkin".concat(prenotazione.getNumero_biglietti());
     }
 
-    @PostMapping("/check-in/end")
+    @PostMapping("/success")
     public String saveCheckin(@ModelAttribute("checkin") Checkin checkin, Model model) {
         try{
             prenotazioneService.saveCheckin(checkin);
