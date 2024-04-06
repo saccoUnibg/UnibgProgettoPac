@@ -12,6 +12,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PrenotazioneServiceImpl implements PrenotazioneService {
 
@@ -21,17 +24,24 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
     CheckinRepository checkinRepository;
 
     @Override
-    public Long savePrenotazione(Prenotazione prenotazione) {
+    public Prenotazione savePrenotazione(Prenotazione prenotazione) {
         PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
         BeanUtils.copyProperties(prenotazione,prenotazioneEntity);
         prenotazioneEntity = prenotazioneRepository.save(prenotazioneEntity);
-        return prenotazioneEntity.getId();
+        BeanUtils.copyProperties(prenotazioneEntity,prenotazione);
+        return prenotazione;
     }
 
     @Override
-    public void saveCheckin(Checkin checkin) {
-        CheckinEntity checkinEntity = new CheckinEntity();
-        BeanUtils.copyProperties(checkin,checkinEntity);
-        checkinRepository.save(checkinEntity);
+    public void saveCheckin(List<Checkin> checkinList,String mail,String idPrenotazione) {
+        List<CheckinEntity> checkinEntityList = new ArrayList<>();
+        for(Checkin temp: checkinList){
+            CheckinEntity checkinEntity = new CheckinEntity();
+            BeanUtils.copyProperties(temp,checkinEntity);
+            checkinEntity.setMail(mail);
+            checkinEntity.setId_prenotazione(idPrenotazione);
+            checkinEntityList.add(checkinEntity);
+        }
+        checkinRepository.saveAll(checkinEntityList);
     }
 }
