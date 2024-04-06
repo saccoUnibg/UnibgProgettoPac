@@ -35,4 +35,7 @@ public class LoginServiceImpl implements LoginService {
         return utenteEntity;
     }
 
+    public UtenteEntity findByMail(String mail){
+        return utenteRepository.findByMail(mail);
+    }
 }

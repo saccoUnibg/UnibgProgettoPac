@@ -21,7 +21,7 @@ public class VoliController {
 
     @GetMapping("/ricerca")
     public String ricercaVoli(){
-        return "ricercavoli";
+        return "voli/ricercavoli";
     }
 
     @GetMapping("/lista")
@@ -30,9 +30,9 @@ public class VoliController {
             List<VoloEntity> listaVoli = voliService.ricercaVoli(ricerca);
             model.addAttribute("listavoli",listaVoli);
         } catch(Exception e){
-            return "ricercavoli_error";
+            return "voli/ricercavoli_error";
         }
-        return "listavoli";
+        return "voli/listavoli";
     }
 
 }

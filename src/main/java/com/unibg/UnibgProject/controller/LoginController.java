@@ -3,6 +3,7 @@ package com.unibg.UnibgProject.controller;
 import com.unibg.UnibgProject.Entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,47 +17,48 @@ public class LoginController {
     @Autowired
     LoginService loginService;
     @GetMapping("")
-    public String homePage() {
+    public String homePage(HttpSession session) {
+        session.invalidate();
         return "index";
     }
 
     @GetMapping("/registrazione")
     public String registrazione() {
-        return "registrazione";
+        return "login/registrazione";
     }
 
     @PostMapping("/registrazioneform")
     public String registrazioneForm(@ModelAttribute("utente") Utente utente, Model model) {
         try {
             UtenteEntity utenteEntity = loginService.saveRegistrazione(utente);
-            model.addAttribute("utente",utenteEntity);
-            return "registrazionesuccess";
+            return "login/registrazionesuccess";
         } catch(Exception e){
-            model.addAttribute("error",e.toString());
-            return "registrazionefail";
+            return "error";
         }
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "login/login";
     }
 
     @PostMapping("/profilehomepage")
-    public String loginForm(@ModelAttribute("utente") Utente utente, Model model) {
+    public String loginForm(@ModelAttribute("utente") Utente utente, Model model, HttpSession session) {
         try{
-            UtenteEntity utenteEntity = loginService.login(utente);
-            model.addAttribute("utente",utenteEntity);
+            UtenteEntity utenteEntity;
+            if(session.getAttribute("mail")==null) {
+                utenteEntity = loginService.login(utente);
+                session.setAttribute("mail", utente.getMail());
+            } else{
+                utenteEntity = loginService.findByMail( (String) session.getAttribute("mail"));
+            }
+            model.addAttribute("utente", utenteEntity);
         } catch(Exception e){
             model.addAttribute("error","Errore di login.");
-            return "loginerror";
+            return "error";
         }
-        return "profilehomepage";
+        return "login/profilehomepage";
     }
-}
 
-/*
-relazione d'azienda (documento) --> condividere database con prof.ssa
-+ ricreare situazioni
-inserisco prodotti, clienti, acquisto e vendita materiale, etc.
- */
+
+}

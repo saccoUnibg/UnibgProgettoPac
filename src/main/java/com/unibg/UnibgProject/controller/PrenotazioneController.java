@@ -1,15 +1,20 @@
 package com.unibg.UnibgProject.controller;
 
-import com.unibg.UnibgProject.model.Checkin;
-import com.unibg.UnibgProject.model.Prenotazione;
-import com.unibg.UnibgProject.model.Volo;
+import com.unibg.UnibgProject.Entity.UtenteEntity;
+import com.unibg.UnibgProject.model.*;
+import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/prenotazioni")
@@ -18,33 +23,53 @@ public class PrenotazioneController {
     @Autowired
     PrenotazioneService prenotazioneService;
 
+    @Autowired
+    LoginService loginService;
+
     @PostMapping("/crea")
-    public String creaPrenotazione(@ModelAttribute("volo") Volo volo, Model model) {
-        model.addAttribute(volo);
-        return "creaprenotazione";
+    public String creaPrenotazione(@ModelAttribute("volo") Volo volo,HttpSession session, Model model) {
+        session.setAttribute("id_volo",volo.getId());
+        return "prenotazione/creaprenotazione";
     }
 
     @PostMapping("/check-in")
-    public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, Model model) {
+    public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, HttpSession session,Model model) {
         try{
-            //salvo la prenotazione e prelevo l'id da portare nel check-in
-            String id_prenotazione = String.valueOf(prenotazioneService.savePrenotazione(prenotazione));
-            prenotazione.setId(id_prenotazione);
-            model.addAttribute(prenotazione);
+            //Imposto id_volo nella prenotazione (preso da session) e la salvo
+            prenotazione.setId_volo((String)session.getAttribute("id_volo"));
+            prenotazione = prenotazioneService.savePrenotazione(prenotazione);
 
+            //salvo in sessione id_prenotazione
+            session.setAttribute("id_prenotazione",prenotazione.getId());
+
+            //Creo lista di checkin per popolare il form nel modo corretto
+            List<Checkin> tempList = new ArrayList<>();
+            for(int i = 0;i<Integer.parseInt(prenotazione.getNumero_biglietti());i++){
+                tempList.add(new Checkin());
+            }
+            CheckinList checkinList = new CheckinList();
+            checkinList.setCheckins(tempList);
+            //aggiungo la lista al model da restituire al fe
+            model.addAttribute("checkinList",checkinList);
         } catch(Exception e){
             return "error";
         }
-        return "checkin".concat(prenotazione.getNumero_biglietti());
+        return "prenotazione/checkin";
     }
 
     @PostMapping("/success")
-    public String saveCheckin(@ModelAttribute("checkin") Checkin checkin, Model model) {
+    public String saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
         try{
-            prenotazioneService.saveCheckin(checkin);
+            String mail=(String) session.getAttribute("mail");
+            String idPrenotazione = (String) session.getAttribute("id_prenotazione");
+            prenotazioneService.saveCheckin(checkinList.getCheckins(),mail,idPrenotazione);
+            UtenteEntity utenteEntity = loginService.findByMail(mail);
+            Utente utente = new Utente();
+            BeanUtils.copyProperties(utenteEntity,utente);
+            model.addAttribute(utente);
         } catch(Exception e){
             return "error";
         }
-        return "profilehomepage";
+        return "login/profilehomepage";
     }
 }
