@@ -18,9 +18,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${listavoli.empty}">
-        <td colspan="2"> Nessun volo disponibile </td>
-    </tr>
+    <div>
+        <tr th:if="${listavoli.empty}">
+            <td colspan="2"> Nessun volo disponibile </td>
+        </tr>
+    </div>
+
     <tr th:each="volo : ${listavoli}" align="center">
         <td><span th:text="${volo.partenza}"> Partenza </span></td>
         <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
@@ -38,7 +41,8 @@
                         <input type="hidden" th:value="${volo.h_arrivo}" name="h_arrivo">
                         <input type="hidden" th:value="${volo.compagnia}" name="compagnia">
                         <input type="hidden" th:value="${volo.prezzo}" name="prezzo">
-                        <input type="hidden" th:value="${volo.id}" name="id_volo">
+                        <input type="hidden" th:value="${volo.data}" name="data">
+                        <input type="hidden" th:value="${volo.id}" name="id">
                         <button type="submit">Prenota</button>
                     </div>
                 </form>

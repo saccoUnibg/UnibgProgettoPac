@@ -2,12 +2,15 @@ package com.unibg.UnibgProject.services.impl;
 
 import com.unibg.UnibgProject.Entity.CheckinEntity;
 import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
+import com.unibg.UnibgProject.Entity.VoloEntity;
 import com.unibg.UnibgProject.model.Checkin;
 import com.unibg.UnibgProject.model.Prenotazione;
+import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.repository.CheckinRepository;
 import com.unibg.UnibgProject.repository.PrenotazioneRepository;
 import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
+import com.unibg.UnibgProject.services.VoliService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +26,16 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
     @Autowired
     CheckinRepository checkinRepository;
 
+    @Autowired
+    VoliService voliService;
+
     @Override
     public Prenotazione savePrenotazione(Prenotazione prenotazione) {
         PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
         BeanUtils.copyProperties(prenotazione,prenotazioneEntity);
         prenotazioneEntity = prenotazioneRepository.save(prenotazioneEntity);
         BeanUtils.copyProperties(prenotazioneEntity,prenotazione);
+        prenotazione.setId(prenotazioneEntity.getId().toString());
         return prenotazione;
     }
 
@@ -44,4 +51,18 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
         }
         checkinRepository.saveAll(checkinEntityList);
     }
+
+    public List<Volo> getVoliByIdPrenotazione(String mail){
+        // recupero le informazioni in base alla mail dell'utenza
+        List<PrenotazioneEntity> listaPrenotazioni = prenotazioneRepository.findByMail(mail);
+
+        //Per recuperare le informazioni dei voli relativi alle prenotazioni, cerco i voli con id_volo
+        List<Long> idList = new ArrayList<>();
+        for (PrenotazioneEntity temp:listaPrenotazioni) {
+            idList.add(Long.valueOf(temp.getId_volo()));
+        }
+        return voliService.getVoliByIdList(idList);
+
+    }
+
 }

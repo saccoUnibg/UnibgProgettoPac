@@ -7,5 +7,7 @@ import com.unibg.UnibgProject.model.Volo;
 import java.util.List;
 
 public interface VoliService {
-     List<VoloEntity> ricercaVoli(Ricerca ricerca);
+     List<Volo> ricercaVoli(Ricerca ricerca);
+
+     List<Volo> getVoliByIdList(List<Long> idList);
 }
