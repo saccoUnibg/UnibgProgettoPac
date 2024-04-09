@@ -21,32 +21,25 @@
         <th> Data </th>
         <th> Partenza </th>
         <th> Arrivo </th>
-        <th> Ora partenza </th>
-        <th> Numero biglietti </th>
+        <th> Ora Partenza </th>
         <th> ID Volo </th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${listaprenotazioni.empty}">
+    <tr th:if="${listaPrenotazioni.empty}">
         <td colspan="2"> Nessuna prenotazione disponibile </td>
     </tr>
-    <tr th:each="prenotazione : ${listaprenotazioi}" align="center">
-        <td><span th:text="${prenotazione.data}"> Data </span></td>
-        <td><span th:text="${prenotazione.partenza}"> Partenza </span></td>
-        <td><span th:text="${prenotazione.arrivo}"> Arrivo </span></td>
-        <td><span th:text="${prenotazione.ora_partenza}"> Ora partenza </span></td>
-        <td><span th:text="${prenotazione.num_biglietti}"> Numero biglietti </span></td>
-        <td><span th:text="${prenotazione.id_volo}"> ID volo </span></td>
+    <tr th:each="volo : ${listaPrenotazioni}" align="center">
+        <td><span th:text="${volo.data}"> Data </span></td>
+        <td><span th:text="${volo.partenza}"> Partenza </span></td>
+        <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
+        <td><span th:text="${volo.h_partenza}"> Ora Partenza </span></td>
+        <td><span th:text="${volo.id}"> ID Volo </span></td>
         <td>
             <div align="center">
-                <form action="#" th:action="@{/prenotazioni/elimina/}" method="post" th:object="${prenotazione}">
+                <form action="#" th:action="@{/prenotazioni/elimina}" method="post" th:object="${prenotazione}">
                     <div class="container">
-                        <input type="hidden" th:value="${prenotazione.data}" name="data">
-                        <input type="hidden" th:value="${prenotazione.partenza}" name="partenza">
-                        <input type="hidden" th:value="${prenotazione.arrivo}" name="arrivo">
-                        <input type="hidden" th:value="${prenotazione.ora_partenza}" name="ora_partenza">
-                        <input type="hidden" th:value="${prenotazione.num_biglietti}" name="num_biglietti">
-                        <input type="hidden" th:value="${prenotazione.id_volo}" name="id_volo">
+                        <input type="hidden" th:value="${volo.id}" name="id_volo">
                         <button type="submit">Elimina</button>
                     </div>
                 </form>

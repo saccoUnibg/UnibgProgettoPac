@@ -1,9 +1,11 @@
 package com.unibg.UnibgProject.services.impl;
 
+import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
 import com.unibg.UnibgProject.Entity.VoloEntity;
 import com.unibg.UnibgProject.model.Ricerca;
 
 import com.unibg.UnibgProject.model.Volo;
+import com.unibg.UnibgProject.repository.PrenotazioneRepository;
 import com.unibg.UnibgProject.repository.VoliRepository;
 import com.unibg.UnibgProject.services.VoliService;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,8 @@ public class VoliServiceImpl implements VoliService {
     @Autowired
     VoliRepository voliRepository;
 
+    @Autowired
+    PrenotazioneRepository prenotazioneRepository;
     @Override
     public List<Volo> ricercaVoli(Ricerca ricerca) {
         List<VoloEntity> voliEntitylist = voliRepository.findByPartenzaAndArrivoIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getArrivo(),ricerca.getData());
@@ -30,6 +34,24 @@ public class VoliServiceImpl implements VoliService {
             temp.setId(tempEntity.getId().toString());
             voliList.add(temp);
         }
+
+        // Non voglio mostrare all'utente voli per cui ha gia' effettuato una prenotazione
+        // 1. Ottengo la lista di id_volo dalle prenotazioni effettuate da una mail
+
+        List<PrenotazioneEntity> prenotazioneEntityList = prenotazioneRepository.findByMail(ricerca.getMail());
+        List<String> idVoliList = new ArrayList<>();
+        for(PrenotazioneEntity temp: prenotazioneEntityList){
+            idVoliList.add(temp.getId_volo());
+        }
+
+        // 2. Controllo che l'id dei voli delle prenotazioni non sia presente nella lista dei voli generata dalla ricerca;
+        //      in caso contrario devo rimuovere tale volo dalla lista di ricerca
+        //      Inoltre, la lista dei voli e' gia' ordinata per id; quindi implementare un algoritmo di ricerca che trovi
+        //      quelli gia' prenotati
+
+        voliList.removeIf(volo -> idVoliList.contains(volo.getId()));
+
+
         return voliList;
     }
 

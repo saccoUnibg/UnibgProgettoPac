@@ -12,4 +12,5 @@ public class Ricerca {
     private String partenza;
     private String arrivo;
     private String data;
+    private String mail;
 }

@@ -77,8 +77,8 @@ public class PrenotazioneController {
 
     @GetMapping("/visualizza")
     public String visualizzaPrenotazioni(HttpSession session, Model model){
-        List<Volo> listaVoliByIdPrenotazioni = prenotazioneService.getVoliByIdPrenotazione((String) session.getAttribute("mail"));
-        model.addAttribute(listaVoliByIdPrenotazioni);
+        List<Volo> listaPrenotazioni = prenotazioneService.getVoliByIdPrenotazione((String) session.getAttribute("mail"));
+        model.addAttribute(listaPrenotazioni);
 
         return "visualizzaprenotazioni";
     }
