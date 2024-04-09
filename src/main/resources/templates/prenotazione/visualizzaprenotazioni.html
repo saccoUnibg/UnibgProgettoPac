@@ -1,33 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Visualizza Prenotazione</title>
 </head>
 <body>
-<div align="center">
-<table>
+
+<table align="center">
     <style>
         table {
         border-collapse:collapse
         }
         td, th {
-        border:2px solid #000000;
+        border:1px solid #000000;
         padding:8px;
         }
     </style>
-    <caption>
-        <p>Le mie prenotazioni</p>
-    </caption>
     <thead>
-    <tr><td>Data</td><td>Partenza</td><td>Arrivo</td><td>Ora Partenza</td><td>Numero Biglietti</td><td>ID Volo</td></tr>
+    <tr>
+        <th> Data </th>
+        <th> Partenza </th>
+        <th> Arrivo </th>
+        <th> Ora partenza </th>
+        <th> Numero biglietti </th>
+        <th> ID Volo </th>
+    </tr>
     </thead>
     <tbody>
-    <tr><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td></tr>
-    <tr><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td></tr>
-    <tr><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td><td>Dato</td></tr>
+    <tr th:if="${listaprenotazioni.empty}">
+        <td colspan="2"> Nessuna prenotazione disponibile </td>
+    </tr>
+    <tr th:each="prenotazione : ${listaprenotazioi}" align="center">
+        <td><span th:text="${prenotazione.data}"> Data </span></td>
+        <td><span th:text="${prenotazione.partenza}"> Partenza </span></td>
+        <td><span th:text="${prenotazione.arrivo}"> Arrivo </span></td>
+        <td><span th:text="${prenotazione.ora_partenza}"> Ora partenza </span></td>
+        <td><span th:text="${prenotazione.num_biglietti}"> Numero biglietti </span></td>
+        <td><span th:text="${prenotazione.id_volo}"> ID volo </span></td>
+        <td>
+            <div align="center">
+                <form action="#" th:action="@{/prenotazioni/elimina/}" method="post" th:object="${prenotazione}">
+                    <div class="container">
+                        <input type="hidden" th:value="${prenotazione.data}" name="data">
+                        <input type="hidden" th:value="${prenotazione.partenza}" name="partenza">
+                        <input type="hidden" th:value="${prenotazione.arrivo}" name="arrivo">
+                        <input type="hidden" th:value="${prenotazione.ora_partenza}" name="ora_partenza">
+                        <input type="hidden" th:value="${prenotazione.num_biglietti}" name="num_biglietti">
+                        <input type="hidden" th:value="${prenotazione.id_volo}" name="id_volo">
+                        <button type="submit">Elimina</button>
+                    </div>
+                </form>
+            </div>
+        </td>
+    </tr>
     </tbody>
 </table>
-    </div>
+
 </body>
 </html>
