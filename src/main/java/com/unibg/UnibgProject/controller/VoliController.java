@@ -2,7 +2,9 @@ package com.unibg.UnibgProject.controller;
 
 import com.unibg.UnibgProject.Entity.VoloEntity;
 import com.unibg.UnibgProject.model.Ricerca;
+import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.services.VoliService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +27,10 @@ public class VoliController {
     }
 
     @GetMapping("/lista")
-    public String listaVoli(@ModelAttribute("ricerca") Ricerca ricerca, Model model){
+    public String listaVoli(@ModelAttribute("ricerca") Ricerca ricerca, HttpSession session, Model model){
         try{
-            List<VoloEntity> listaVoli = voliService.ricercaVoli(ricerca);
+            ricerca.setMail((String) session.getAttribute("mail"));
+            List<Volo> listaVoli = voliService.ricercaVoli(ricerca);
             model.addAttribute("listavoli",listaVoli);
         } catch(Exception e){
             return "voli/ricercavoli_error";
