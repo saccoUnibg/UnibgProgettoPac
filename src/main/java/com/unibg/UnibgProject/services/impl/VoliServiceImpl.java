@@ -2,6 +2,7 @@ package com.unibg.UnibgProject.services.impl;
 
 import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
 import com.unibg.UnibgProject.Entity.VoloEntity;
+import com.unibg.UnibgProject.model.Prenotazione;
 import com.unibg.UnibgProject.model.Ricerca;
 
 import com.unibg.UnibgProject.model.Volo;
@@ -51,7 +52,6 @@ public class VoliServiceImpl implements VoliService {
 
         voliList.removeIf(volo -> idVoliList.contains(volo.getId()));
 
-
         return voliList;
     }
 
@@ -65,6 +65,36 @@ public class VoliServiceImpl implements VoliService {
             voloList.add(temp);
         }
         return voloList;
+    }
+
+    public List<Volo> getVoliByPrenotazioni(List<Prenotazione> listaPrenotazioni) {
+
+        // 1. Ottengo una lista con gli id_volo delle prenotazioni;
+        // 2. mi prendo gli oggetti "volo" il cui id è nella lista degli id_volo delle prenotazioni
+        List<Long> idVoloList = new ArrayList<>();
+
+        for (Prenotazione temp:listaPrenotazioni) {
+            idVoloList.add(Long.valueOf(temp.getId_volo()));
+        }
+        List <VoloEntity> voloEntityList= voliRepository.findByIdIn(idVoloList);
+
+        List<Volo> voloList = new ArrayList<>();
+        for (VoloEntity tempEntity: voloEntityList) {
+            Volo temp = new Volo();
+            BeanUtils.copyProperties(tempEntity,temp);
+            temp.setId(tempEntity.getId().toString());
+            voloList.add(temp);
+        }
+
+        return voloList;
+    }
+
+    public Volo getVoloById(Long idVolo){
+        VoloEntity voloEntity = voliRepository.findById(idVolo);
+        Volo volo = new Volo();
+        BeanUtils.copyProperties(voloEntity,volo);
+        volo.setId(voloEntity.getId().toString());
+        return volo;
     }
 
 }

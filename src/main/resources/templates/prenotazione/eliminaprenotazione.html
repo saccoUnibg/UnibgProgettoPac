@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Elimina Prenotazione</title>
 </head>
 <body>
-<div align="center">
-    <form action="#" th:action="@{/prenotazioni/elimina/conferma}" method="get" modelAttribute="utente">
-        <div class="container">
-            <h1>Elimina prenotazione</h1>
+    <div align = "center">
+        <h1>Elimina prenotazione</h1>
+        <hr>
+    </div>
+
+    <form action="#" th:action="@{/prenotazioni/elimina/conferma}" method="post" modelAttribute="volo">
+        <div class="container" align = "center">
+
+            <h4>Data: </h4>
+            <p th:text="${volo.data}"></p>
+
+            <p><b>Partenza: </b></p>
+            <p th:text="${volo.partenza}"></p>
+
+            <h4>Arrivo: </h4>
+            <p th:text="${volo.arrivo}"></p>
+
+            <h4>Ora Partenza: </h4>
+            <p th:text="${volo.h_partenza}"></p>
+
             <hr>
 
-            <label>Data</label><br>
-            <input type="date" placeholder="Data" name="data" size="40" required><br>
-            <label>Partenza</label><br>
-            <input type="text" placeholder="Partenza" name="partenza" size="40" required><br>
-            <label>Arrivo</label><br>
-            <input type="text" placeholder="Arrivo" name="arrivo" required>
-            <label>Ora partenza</label><br>
-            <input type="text" placeholder="Ora partenza" name="ora partenza" size="40" required><br>
-            <label>Numero biglietti</label><br>
-            <input type="text" placeholder="Numero biglietti" name="numero biglietti" size="40" required><br>
-            <label>ID volo</label><br>
-            <input type="text" placeholder="ID volo" name="id volo" size="40" required><br>
-
-
-            <hr>
-            <h2>La prenotazione per il seguente volo verrà eliminata.</h2>
+            <h2>La prenotazione per il seguente volo verrà eliminata.</h2><br>
             <h2>Confermare?</h2>
-
             <button type="submit" class="registerbtn">Conferma!</button>
+            <button type="submit" th:formaction="@{/profilehomepage}">Annulla e torna alla homepage</button>
+
         </div>
+        <br><br>
+        <hr>
+
     </form>
-</div>
 </body>
 </html>

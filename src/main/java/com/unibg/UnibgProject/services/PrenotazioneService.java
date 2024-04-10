@@ -14,5 +14,5 @@ public interface PrenotazioneService {
 
     void saveCheckin(List<Checkin> checkin,String mail,String idPrenotazione);
 
-    public List<Volo> getVoliByIdPrenotazione(String mail);
+    public List<Prenotazione> getVoliPrenotatiByMail(String mail);
 }

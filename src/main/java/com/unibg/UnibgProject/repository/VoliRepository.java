@@ -12,4 +12,5 @@ public interface VoliRepository extends CrudRepository<VoloEntity,Integer> {
     List<VoloEntity> findByPartenzaAndArrivoIgnoreCaseAndData(String partenza, String arrivo,String data);
 
     List<VoloEntity> findByIdIn(Collection<Long> idList);
+    VoloEntity findById(Long id);
 }

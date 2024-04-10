@@ -52,17 +52,20 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
         checkinRepository.saveAll(checkinEntityList);
     }
 
-    public List<Volo> getVoliByIdPrenotazione(String mail){
+    public List<Prenotazione> getVoliPrenotatiByMail(String mail){
+
         // recupero le informazioni in base alla mail dell'utenza
-        List<PrenotazioneEntity> listaPrenotazioni = prenotazioneRepository.findByMail(mail);
+        List<PrenotazioneEntity> prenotazioneEntityList = prenotazioneRepository.findByMail(mail);
 
         //Per recuperare le informazioni dei voli relativi alle prenotazioni, cerco i voli con id_volo
-        List<Long> idList = new ArrayList<>();
-        for (PrenotazioneEntity temp:listaPrenotazioni) {
-            idList.add(Long.valueOf(temp.getId_volo()));
+        List<Prenotazione> prenotazioneList = new ArrayList<>();
+        for (PrenotazioneEntity tempEntity : prenotazioneEntityList) {
+            Prenotazione temp = new Prenotazione();
+            BeanUtils.copyProperties(tempEntity,temp);
+            temp.setId(tempEntity.getId().toString());
+            prenotazioneList.add(temp);
         }
-        return voliService.getVoliByIdList(idList);
-
+        return prenotazioneList;
     }
 
 }

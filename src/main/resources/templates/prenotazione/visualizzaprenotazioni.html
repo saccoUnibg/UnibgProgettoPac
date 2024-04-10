@@ -5,49 +5,54 @@
     <title>Visualizza Prenotazione</title>
 </head>
 <body>
+    <h1>Prenotazioni</h1>
+    <h3>Da qui puoi vedere e cancellare le prenotazioni effettuate</h3> <br> <br> <hr>
+    <table align="center">
+        <thead>
+        <tr>
+            <th> Data </th>
+            <th> Partenza </th>
+            <th> Arrivo </th>
+            <th> Ora Partenza </th>
+            <th> ID Volo </th>
+        </tr>
+        </thead>
+        <tbody>
+        <div>
+            <tr th:if="${listaVoli.empty}">
+                <td colspan="2"> Nessuna prenotazione disponibile!  </td>
+            </tr>
+        </div>
 
-<table align="center">
-    <style>
-        table {
-        border-collapse:collapse
-        }
-        td, th {
-        border:1px solid #000000;
-        padding:8px;
-        }
-    </style>
-    <thead>
-    <tr>
-        <th> Data </th>
-        <th> Partenza </th>
-        <th> Arrivo </th>
-        <th> Ora Partenza </th>
-        <th> ID Volo </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${listaPrenotazioni.empty}">
-        <td colspan="2"> Nessuna prenotazione disponibile </td>
-    </tr>
-    <tr th:each="volo : ${listaPrenotazioni}" align="center">
-        <td><span th:text="${volo.data}"> Data </span></td>
-        <td><span th:text="${volo.partenza}"> Partenza </span></td>
-        <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
-        <td><span th:text="${volo.h_partenza}"> Ora Partenza </span></td>
-        <td><span th:text="${volo.id}"> ID Volo </span></td>
-        <td>
-            <div align="center">
-                <form action="#" th:action="@{/prenotazioni/elimina}" method="post" th:object="${prenotazione}">
-                    <div class="container">
-                        <input type="hidden" th:value="${volo.id}" name="id_volo">
-                        <button type="submit">Elimina</button>
-                    </div>
-                </form>
+        <tr th:each="volo : ${listaVoli}" align="center">
+            <td><span th:text="${volo.data}"> Data </span></td>
+            <td><span th:text="${volo.partenza}"> Partenza </span></td>
+            <td><span th:text="${volo.arrivo}"> Arrivo </span></td>
+            <td><span th:text="${volo.h_partenza}"> Ora Partenza </span></td>
+            <td><span th:text="${volo.id}"> ID Volo </span></td>
+            <td>
+                <div align="center">
+                    <form action="#" th:action="@{/prenotazioni/elimina}" method="post" modelattribute="volo">
+                        <div class="container">
+                            <input type="hidden" th:value="${volo.id}" name="id">
+                            <button type="submit">Elimina</button>
+                        </div>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+<hr><br><br>
+
+    <div align="center">
+        <form action="#" th:action="@{/profilehomepage}" method="post">
+            <div>
+                <button type="submit">Homepage</button>
             </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        </form>
+    </div>
 
 </body>
 </html>
