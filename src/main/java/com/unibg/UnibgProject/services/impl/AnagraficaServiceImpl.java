@@ -3,19 +3,18 @@ package com.unibg.UnibgProject.services.impl;
 import com.unibg.UnibgProject.Entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.repository.UtenteRepository;
-import com.unibg.UnibgProject.services.UtenteService;
+import com.unibg.UnibgProject.services.AnagraficaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 
 @Service
-public class UtenteServiceImpl implements UtenteService {
+public class AnagraficaServiceImpl implements AnagraficaService {
     @Autowired
     UtenteRepository utenteRepository;
 
     @Override
-    public UtenteEntity modificaDati(Utente utente) {
+    public UtenteEntity modificaAnagrafica(Utente utente) {
         try {
             UtenteEntity utenteEntity = utenteRepository.findByMail(utente.getMail());
             BeanUtils.copyProperties(utente, utenteEntity);
@@ -28,7 +27,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public Boolean eliminaUtente(UtenteEntity utente) {
+    public Boolean eliminaAnagrafica(UtenteEntity utente) {
         try {
             utenteRepository.delete(utente);
             return true;
