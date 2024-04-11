@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/prenotazioni")
@@ -90,6 +92,12 @@ public class PrenotazioneController {
         List<Volo> listaVoli =
                 voliService.getVoliByPrenotazioni(prenotazioneList);
 
+        // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
+        Map<String,String> idPrenotazioniAndVoli = new HashMap<>();
+        for(Prenotazione temp: prenotazioneList){
+            idPrenotazioniAndVoli.put(temp.getId(),temp.getId_volo());
+        }
+        session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
         model.addAttribute("listaVoli",listaVoli);
 
@@ -99,21 +107,23 @@ public class PrenotazioneController {
     @PostMapping("/elimina")
     public String eliminaPrenotazione(@ModelAttribute("volo") Volo voloid, HttpSession session, Model model){
 
-        // Prendo l'id volo di cui si vuole cancellare la prenotazione, e lo salvo in sessione;
         // una volta confermato, cancello tutto ciò che è legato alla mail per quel id_volo (prenotazione + checkIn di ogni persona)
         String idVolo = voloid.getId();
         session.setAttribute("id_volo",idVolo);
 
-        Volo volo = voliService.getVoloById(Long.valueOf(idVolo));
-        model.addAttribute("volo",volo);
+        // Volo volo = voliService.getVoloById(Long.valueOf(idVolo));
+        model.addAttribute("volo",voloid);
         return "prenotazione/eliminaprenotazione";
     }
 
     @PostMapping("/elimina/conferma")
     public String confermaEliminaPrenotazione(HttpSession session,Model model){
         String mail = (String) session.getAttribute("mail");
-
+        String idVolo = (String) session.getAttribute("id_volo");
         // TODO: cancellare prenotazioni e checkin con mail e id_volo gia' salvati in sessione
+
+        Map<String,String> idPrenotazioniAndVoli = (Map<String,String>) session.getAttribute("idPrenotazioniAndVoli");
+
 
         return "prenotazione/confermaeliminaprenotazione";
     }

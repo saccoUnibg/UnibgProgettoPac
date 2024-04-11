@@ -5,8 +5,11 @@
     <title>Visualizza Prenotazione</title>
 </head>
 <body>
-    <h1>Prenotazioni</h1>
-    <h3>Da qui puoi vedere e cancellare le prenotazioni effettuate</h3> <br> <br> <hr>
+    <div>
+        <h1>Prenotazioni</h1>
+        <h3>Da qui puoi vedere e cancellare le prenotazioni effettuate</h3> <br> <br> <hr>
+    </div>
+
     <table align="center">
         <thead>
         <tr>
@@ -34,6 +37,13 @@
                 <div align="center">
                     <form action="#" th:action="@{/prenotazioni/elimina}" method="post" modelattribute="volo">
                         <div class="container">
+                            <input type="hidden" th:value="${volo.partenza}" name="partenza">
+                            <input type="hidden" th:value="${volo.arrivo}" name="arrivo">
+                            <input type="hidden" th:value="${volo.h_partenza}" name="h_partenza">
+                            <input type="hidden" th:value="${volo.h_arrivo}" name="h_arrivo">
+                            <input type="hidden" th:value="${volo.compagnia}" name="compagnia">
+                            <input type="hidden" th:value="${volo.prezzo}" name="prezzo">
+                            <input type="hidden" th:value="${volo.data}" name="data">
                             <input type="hidden" th:value="${volo.id}" name="id">
                             <button type="submit">Elimina</button>
                         </div>
@@ -44,7 +54,7 @@
         </tbody>
     </table>
 
-<hr><br><br>
+<br><hr><br><br>
 
     <div align="center">
         <form action="#" th:action="@{/profilehomepage}" method="post">
