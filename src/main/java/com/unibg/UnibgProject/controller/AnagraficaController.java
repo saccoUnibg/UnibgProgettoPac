@@ -28,9 +28,25 @@ public class AnagraficaController {
 
         UtenteEntity utenteEntity = utenteService.modificaDati(utente);
         session.setAttribute("utente", utenteEntity);
-        model.addAttribute("utente",utenteEntity);
+        model.addAttribute("utente", utenteEntity);
 
         return "modificaAnagraficaSuccess";
+    }
+
+    @PostMapping("/elimina")
+    public String eliminaUtente(@ModelAttribute Utente utente, Model model, HttpSession session) {
+        if (!UtilsGeneric.isSessionActive(session)) {
+            return "error";
+        }
+
+        UtenteEntity utenteEntity = (UtenteEntity) session.getAttribute("utente");
+        if (utenteService.eliminaUtente(utenteEntity)) {
+            System.out.println("Utente eliminato con successo");
+        } else {
+            System.out.println("Errore durante eliminazione dell'utente");
+        }
+
+        return "eliminaAnagraficaSuccess";
     }
 
 }

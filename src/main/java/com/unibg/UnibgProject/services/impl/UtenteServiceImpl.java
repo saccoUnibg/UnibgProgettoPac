@@ -5,9 +5,9 @@ import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.repository.UtenteRepository;
 import com.unibg.UnibgProject.services.UtenteService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Service
 public class UtenteServiceImpl implements UtenteService {
@@ -25,5 +25,15 @@ public class UtenteServiceImpl implements UtenteService {
             System.out.println("Error: " + ex);
         }
         return null;
+    }
+
+    @Override
+    public Boolean eliminaUtente(UtenteEntity utente) {
+        try {
+            utenteRepository.delete(utente);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }
