@@ -122,7 +122,7 @@ public class PrenotazioneController {
         String idVolo = (String) session.getAttribute("id_volo");
         // TODO: cancellare prenotazioni e checkin con mail e id_volo gia' salvati in sessione
 
-        Map<String,String> idPrenotazioniAndVoli = (Map<String,String>) session.getAttribute("idPrenotazioniAndVoli");
+        Map<String,String> idPrenotazioniAndVoli = (HashMap<String,String>) session.getAttribute("idPrenotazioniAndVoli");
 
 
         return "prenotazione/confermaeliminaprenotazione";

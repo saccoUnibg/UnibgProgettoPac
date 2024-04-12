@@ -22,6 +22,6 @@ public class CheckinEntity {
     private String cf;
     @Column
     private String id_documento;
-    @Column
-    private String id_prenotazione;
+    @Column(name="id_prenotazione")
+    private String idPrenotazione;
 }

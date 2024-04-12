@@ -2,13 +2,10 @@ package com.unibg.UnibgProject.services.impl;
 
 import com.unibg.UnibgProject.Entity.CheckinEntity;
 import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
-import com.unibg.UnibgProject.Entity.VoloEntity;
 import com.unibg.UnibgProject.model.Checkin;
 import com.unibg.UnibgProject.model.Prenotazione;
-import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.repository.CheckinRepository;
 import com.unibg.UnibgProject.repository.PrenotazioneRepository;
-import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
 import com.unibg.UnibgProject.services.VoliService;
 import org.springframework.beans.BeanUtils;
@@ -46,7 +43,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
             CheckinEntity checkinEntity = new CheckinEntity();
             BeanUtils.copyProperties(temp, checkinEntity);
             checkinEntity.setMail(mail);
-            checkinEntity.setId_prenotazione(idPrenotazione);
+            checkinEntity.setIdPrenotazione(idPrenotazione);
             checkinEntityList.add(checkinEntity);
         }
         checkinRepository.saveAll(checkinEntityList);
