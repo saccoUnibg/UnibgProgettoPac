@@ -13,6 +13,6 @@ public class Checkin {
     private String cognome;
     private String cf;
     private String id_documento;
-    private String id_prenotazione;
+    private String idPrenotazione;
 
 }

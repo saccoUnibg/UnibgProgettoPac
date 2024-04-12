@@ -8,7 +8,7 @@ import lombok.Setter;
 public class Prenotazione {
 
     private String id;
-    private String id_volo;
+    private String idVolo;
     private String numero_biglietti;
     private String mail;
     private String spesa_totale;

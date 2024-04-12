@@ -43,7 +43,7 @@ public class PrenotazioneController {
     public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, HttpSession session,Model model) {
         try{
             //Imposto id_volo nella prenotazione (preso da session) e la salvo
-            prenotazione.setId_volo((String)session.getAttribute("id_volo"));
+            prenotazione.setIdVolo((String)session.getAttribute("id_volo"));
             prenotazione.setMail((String) session.getAttribute("mail"));
             prenotazione = prenotazioneService.savePrenotazione(prenotazione);
 
@@ -95,7 +95,7 @@ public class PrenotazioneController {
         // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
         Map<String,String> idPrenotazioniAndVoli = new HashMap<>();
         for(Prenotazione temp: prenotazioneList){
-            idPrenotazioniAndVoli.put(temp.getId(),temp.getId_volo());
+            idPrenotazioniAndVoli.put(temp.getId(),temp.getIdVolo());
         }
         session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
