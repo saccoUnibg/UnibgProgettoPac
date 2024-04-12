@@ -65,4 +65,12 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
         return prenotazioneList;
     }
 
+    public void deleteCheckin(String idPrenotazione) {
+        checkinRepository.deleteByIdPrenotazione(idPrenotazione);
+    }
+
+    public void deletePrenotazione(String idPrenotazione) {
+        prenotazioneRepository.deleteById(Integer.valueOf(idPrenotazione));
+    }
+
 }
