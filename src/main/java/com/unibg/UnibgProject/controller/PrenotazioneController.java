@@ -117,17 +117,20 @@ public class PrenotazioneController {
 
     @PostMapping("/elimina/conferma")
     public String confermaEliminaPrenotazione(HttpSession session,Model model){
+        try{
+            // 1. recupero informazioni dalla sessione
+            String idVolo = (String) session.getAttribute("id_volo");
 
-        // 1. recupero informazioni dalla sessione
-        String idVolo = (String) session.getAttribute("id_volo");
+            // chiave: idPrenotazione ; valore: idVolo
+            Map<String,String> idPrenotazioniAndVoli = (HashMap<String,String>) session.getAttribute("idPrenotazioniAndVoli");
 
-        // chiave: idPrenotazione ; valore: idVolo
-        Map<String,String> idPrenotazioniAndVoli = (HashMap<String,String>) session.getAttribute("idPrenotazioniAndVoli");
+            // 2. recupero idPrenotazione dalla map con idVolo ( non filtro per mail, perchè la mappa e' gia' filtrata per mail utenza)
+            String idPrenotazione = idPrenotazioniAndVoli.get(idVolo);
+            prenotazioneService.deletePrenotazione(idPrenotazione);
 
-        // 2. recupero idPrenotazione dalla map con idVolo ( non filtro per mail, perchè la mappa e' gia' filtrata per mail utenza)
-        String idPrenotazione = idPrenotazioniAndVoli.get(idVolo);
-        prenotazioneService.deletePrenotazione(idPrenotazione);
-        prenotazioneService.deleteCheckin(idPrenotazione);
+        } catch (Exception e){
+            return "error";
+        }
 
         return "prenotazione/confermaeliminaprenotazione";
     }

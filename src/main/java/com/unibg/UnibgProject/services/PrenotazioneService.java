@@ -16,7 +16,5 @@ public interface PrenotazioneService {
 
     public List<Prenotazione> getVoliPrenotatiByMail(String mail);
 
-    public void deleteCheckin(String idPrenotazione);
-
     public void deletePrenotazione(String idPrenotazione);
 }
