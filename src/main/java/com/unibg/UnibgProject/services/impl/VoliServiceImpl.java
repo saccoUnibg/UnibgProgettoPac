@@ -42,7 +42,7 @@ public class VoliServiceImpl implements VoliService {
         List<PrenotazioneEntity> prenotazioneEntityList = prenotazioneRepository.findByMail(ricerca.getMail());
         List<String> idVoliList = new ArrayList<>();
         for(PrenotazioneEntity temp: prenotazioneEntityList){
-            idVoliList.add(temp.getId_volo());
+            idVoliList.add(temp.getIdVolo());
         }
 
         // 2. Controllo che l'id dei voli delle prenotazioni non sia presente nella lista dei voli generata dalla ricerca;
@@ -74,7 +74,7 @@ public class VoliServiceImpl implements VoliService {
         List<Long> idVoloList = new ArrayList<>();
 
         for (Prenotazione temp:listaPrenotazioni) {
-            idVoloList.add(Long.valueOf(temp.getId_volo()));
+            idVoloList.add(Long.valueOf(temp.getIdVolo()));
         }
         List <VoloEntity> voloEntityList= voliRepository.findByIdIn(idVoloList);
 

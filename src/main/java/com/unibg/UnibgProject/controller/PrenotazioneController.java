@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/prenotazioni")
@@ -41,7 +43,7 @@ public class PrenotazioneController {
     public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, HttpSession session,Model model) {
         try{
             //Imposto id_volo nella prenotazione (preso da session) e la salvo
-            prenotazione.setId_volo((String)session.getAttribute("id_volo"));
+            prenotazione.setIdVolo((String)session.getAttribute("id_volo"));
             prenotazione.setMail((String) session.getAttribute("mail"));
             prenotazione = prenotazioneService.savePrenotazione(prenotazione);
 
@@ -90,6 +92,12 @@ public class PrenotazioneController {
         List<Volo> listaVoli =
                 voliService.getVoliByPrenotazioni(prenotazioneList);
 
+        // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
+        Map<String,String> idPrenotazioniAndVoli = new HashMap<>();
+        for(Prenotazione temp: prenotazioneList){
+            idPrenotazioniAndVoli.put(temp.getIdVolo(),temp.getId());
+        }
+        session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
         model.addAttribute("listaVoli",listaVoli);
 
@@ -97,23 +105,32 @@ public class PrenotazioneController {
     }
 
     @PostMapping("/elimina")
-    public String eliminaPrenotazione(@ModelAttribute("volo") Volo voloid, HttpSession session, Model model){
+    public String eliminaPrenotazione(@ModelAttribute("volo") Volo volo, HttpSession session, Model model){
 
-        // Prendo l'id volo di cui si vuole cancellare la prenotazione, e lo salvo in sessione;
         // una volta confermato, cancello tutto ciò che è legato alla mail per quel id_volo (prenotazione + checkIn di ogni persona)
-        String idVolo = voloid.getId();
+        String idVolo = volo.getId();
         session.setAttribute("id_volo",idVolo);
 
-        Volo volo = voliService.getVoloById(Long.valueOf(idVolo));
         model.addAttribute("volo",volo);
         return "prenotazione/eliminaprenotazione";
     }
 
     @PostMapping("/elimina/conferma")
     public String confermaEliminaPrenotazione(HttpSession session,Model model){
-        String mail = (String) session.getAttribute("mail");
+        try{
+            // 1. recupero informazioni dalla sessione
+            String idVolo = (String) session.getAttribute("id_volo");
 
-        // TODO: cancellare prenotazioni e checkin con mail e id_volo gia' salvati in sessione
+            // chiave: idPrenotazione ; valore: idVolo
+            Map<String,String> idPrenotazioniAndVoli = (HashMap<String,String>) session.getAttribute("idPrenotazioniAndVoli");
+
+            // 2. recupero idPrenotazione dalla map con idVolo ( non filtro per mail, perchè la mappa e' gia' filtrata per mail utenza)
+            String idPrenotazione = idPrenotazioniAndVoli.get(idVolo);
+            prenotazioneService.deletePrenotazione(idPrenotazione);
+
+        } catch (Exception e){
+            return "error";
+        }
 
         return "prenotazione/confermaeliminaprenotazione";
     }

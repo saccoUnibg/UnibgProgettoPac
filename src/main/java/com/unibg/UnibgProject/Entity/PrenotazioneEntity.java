@@ -14,8 +14,8 @@ public class PrenotazioneEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String id_volo;
+    @Column(name="id_volo")
+    private String idVolo;
     @Column
     private String numero_biglietti;
     @Column
