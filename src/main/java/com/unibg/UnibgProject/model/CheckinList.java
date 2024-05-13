@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class CheckinList {
 
-    private List<Checkin> checkins;
+    private List<Checkin> checkinList;
 }

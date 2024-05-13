@@ -1,26 +1,22 @@
 package com.unibg.UnibgProject.controller;
 
-import com.unibg.UnibgProject.entity.UtenteEntity;
 import com.unibg.UnibgProject.model.*;
 import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
 import com.unibg.UnibgProject.services.VoliService;
+import com.unibg.UnibgProject.utils.ApiResponse;
+import com.unibg.UnibgProject.utils.ApiResponseCodes;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/prenotazioni")
 public class PrenotazioneController {
 
@@ -34,13 +30,16 @@ public class PrenotazioneController {
     VoliService voliService;
 
     @PostMapping("/crea")
-    public String creaPrenotazione(@ModelAttribute("volo") Volo volo,HttpSession session, Model model) {
+    public ApiResponse creaPrenotazione(@RequestBody Volo volo, HttpSession session) {
+        ApiResponse response = new ApiResponse();
         session.setAttribute("id_volo",volo.getId());
-        return "prenotazione/creaprenotazione";
+        response.setObject(null,ApiResponseCodes.SUCCESS);
+        return response;
     }
 
     @PostMapping("/check-in")
-    public String checkIn(@ModelAttribute("prenotazione") Prenotazione prenotazione, HttpSession session,Model model) {
+    public ApiResponse checkIn(@RequestBody Prenotazione prenotazione, HttpSession session,Model model) {
+        ApiResponse response = new ApiResponse();
         try{
             //Imposto id_volo nella prenotazione (preso da session) e la salvo
             prenotazione.setIdVolo((String)session.getAttribute("id_volo"));
@@ -56,13 +55,13 @@ public class PrenotazioneController {
                 tempList.add(new Checkin());
             }
             CheckinList checkinList = new CheckinList();
-            checkinList.setCheckins(tempList);
+            checkinList.setCheckinList(tempList);
             //aggiungo la lista al model da restituire al fe
-            model.addAttribute("checkinList",checkinList);
+            response.setObject(checkinList,ApiResponseCodes.SUCCESS);
         } catch(Exception e){
-            return "error";
+            response.setObject(null,ApiResponseCodes.ERROR);
         }
-        return "prenotazione/checkin";
+        return response;
     }
 
     @PostMapping("/success")
@@ -70,7 +69,7 @@ public class PrenotazioneController {
         try{
             String mail=(String) session.getAttribute("mail");
             String idPrenotazione = (String) session.getAttribute("id_prenotazione");
-            prenotazioneService.saveCheckin(checkinList.getCheckins(),mail,idPrenotazione);
+            prenotazioneService.saveCheckin(checkinList.getCheckinList(),mail,idPrenotazione);
             Utente utente = loginService.findByMail(mail);
 
             model.addAttribute(utente);
