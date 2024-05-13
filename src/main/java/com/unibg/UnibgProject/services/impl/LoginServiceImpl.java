@@ -6,6 +6,7 @@ import com.unibg.UnibgProject.repository.UtenteRepository;
 import com.unibg.UnibgProject.services.LoginService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,14 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     UtenteRepository utenteRepository;
-    public UtenteEntity saveRegistrazione(Utente utente) throws Exception {
+    public Utente saveRegistrazione(Utente utente) throws Exception {
         UtenteEntity utenteEntity = new UtenteEntity();
         try{
             BeanUtils.copyProperties(utente,utenteEntity);
-            utenteRepository.save(utenteEntity);
-            return utenteEntity;
+            utenteEntity = utenteRepository.save(utenteEntity);
+
+            BeanUtils.copyProperties(utenteEntity,utente);
+            return utente;
 
         } catch (DataIntegrityViolationException e) {
             if(utenteRepository.findByMail(utenteEntity.getMail()) !=null) {
@@ -29,13 +32,17 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
-    public UtenteEntity login(Utente utente){
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utente.getPsw());
-        return utenteEntity;
+    public Utente login(Utente utente){
+        UtenteEntity utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utente.getPsw());
+        BeanUtils.copyProperties(utenteEntity,utente);
+        return utente;
     }
 
-    public UtenteEntity findByMail(String mail){
-        return utenteRepository.findByMail(mail);
+    public Utente findByMail(String mail){
+        Utente utente = new Utente();
+        UtenteEntity utenteEntity = utenteRepository.findByMail(mail);
+        BeanUtils.copyProperties(utenteEntity, utente);
+        return utente;
     }
+
 }

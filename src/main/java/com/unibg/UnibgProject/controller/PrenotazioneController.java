@@ -71,9 +71,8 @@ public class PrenotazioneController {
             String mail=(String) session.getAttribute("mail");
             String idPrenotazione = (String) session.getAttribute("id_prenotazione");
             prenotazioneService.saveCheckin(checkinList.getCheckins(),mail,idPrenotazione);
-            UtenteEntity utenteEntity = loginService.findByMail(mail);
-            Utente utente = new Utente();
-            BeanUtils.copyProperties(utenteEntity,utente);
+            Utente utente = loginService.findByMail(mail);
+
             model.addAttribute(utente);
         } catch(Exception e){
             return "error";

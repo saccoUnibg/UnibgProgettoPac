@@ -10,6 +10,7 @@ import java.util.List;
 @JsonSerialize
 public class Utente {
 
+    private Long id;
     private String mail;
     private String psw;
     private String nome;

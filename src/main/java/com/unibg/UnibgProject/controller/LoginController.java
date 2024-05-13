@@ -1,91 +1,71 @@
 package com.unibg.UnibgProject.controller;
 
-import com.unibg.UnibgProject.entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
-import com.unibg.UnibgProject.utils.UtilsGeneric;
+import com.unibg.UnibgProject.utils.ApiResponse;
+import com.unibg.UnibgProject.utils.ApiResponseCodes;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class LoginController {
 
     @Autowired
     LoginService loginService;
 
-    @GetMapping("")
-    public String homePage(HttpSession session) {
-        session.invalidate();
-        return "index";
-    }
-
-    @GetMapping("/registrazione")
-    public String registrazione() {
-        return "login/registrazione";
-    }
-
     @PostMapping("/registrazioneform")
-    public String registrazioneForm(@ModelAttribute("utente") Utente utente, Model model) {
+    public ApiResponse registrazioneForm(@RequestBody Utente utente) {
+        ApiResponse response = new ApiResponse();
         try {
-            UtenteEntity utenteEntity = loginService.saveRegistrazione(utente);
-            return "login/registrazionesuccess";
+            utente = loginService.saveRegistrazione(utente);
+            response.setObject(utente);
+            return response;
         } catch (Exception e) {
-            return "error";
+            return null;
         }
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login/login";
-    }
-
     @PostMapping("/profilehomepage")
-    public String loginForm(@ModelAttribute("utente") Utente utente, Model model, HttpSession session) {
+    public ApiResponse loginForm(@RequestBody Utente utente, HttpSession session) {
+        ApiResponse response = new ApiResponse();
         try {
-            UtenteEntity utenteEntity;
             if (session.getAttribute("mail") == null) {
-                utenteEntity = loginService.login(utente);
-                if (utenteEntity == null) {
-                    return "login/login";
+                utente = loginService.login(utente);
+                if (utente == null) {
+                    return null;
                 } else {
                     session.setAttribute("mail", utente.getMail());
                 }
             } else {
-                utenteEntity = loginService.findByMail((String) session.getAttribute("mail"));
+                utente = loginService.findByMail((String) session.getAttribute("mail"));
             }
-            session.setAttribute("utente", utenteEntity);
-            model.addAttribute("utente", utenteEntity);
+            session.setAttribute("utente", utente);
+            response.setObject(utente, ApiResponseCodes.SUCCESS);
         } catch (Exception e) {
-            model.addAttribute("error", "Errore di login.");
-            return "error";
+            return null;
         }
-        return "login/profilehomepage";
+        return response;
     }
 
-    @GetMapping("/profilehomepage")
-    public String profileHome(Model model, HttpSession session) {
-        if (!UtilsGeneric.isSessionActive(session)) {
-            return "error";
-        }
+//    @GetMapping("/profilehomepage")
+//    public String profileHome(Model model, HttpSession session) {
+//        if (!UtilsGeneric.isSessionActive(session)) {
+//            return "error";
+//        }
+//
+//        UtenteEntity utenteEntity = (UtenteEntity) session.getAttribute("utente");
+//        model.addAttribute("utente", utenteEntity);
+//        return "login/profilehomepage";
+//    }
 
-        UtenteEntity utenteEntity = (UtenteEntity) session.getAttribute("utente");
-        model.addAttribute("utente", utenteEntity);
-        return "login/profilehomepage";
-    }
-
-    @RequestMapping("/logout")
-    public String logOut(HttpSession session) {
+    @PostMapping("/logout")
+    public ApiResponse logout(HttpSession session) {
         try {
             session.invalidate();
         } catch (IllegalStateException ex) {
             System.out.println("Error: " + ex);
         }
-        return "logout";
+        return new ApiResponse(ApiResponseCodes.SUCCESS);
     }
 }

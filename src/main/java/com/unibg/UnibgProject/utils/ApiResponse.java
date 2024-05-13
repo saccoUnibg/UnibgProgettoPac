@@ -1,17 +1,31 @@
 package com.unibg.UnibgProject.utils;
 
-public enum ApiResponse{
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
 
-    SUCCESS("200","Success"),
-    ERROR("999","Error: ");
+
+@JsonSerialize
+@Getter
+@Setter
+public class ApiResponse {
 
     private String code;
     private String description;
 
-    private ApiResponse(String code, String description) {
+    private Object object;
 
+    public ApiResponse(){
     }
 
-
+    public ApiResponse(ApiResponseCodes apiResponseCodes){
+        this.code = apiResponseCodes.getCode();
+        this.description = apiResponseCodes.getDescription();
+    }
+    public void setObject(Object object, ApiResponseCodes apiResponseCodes) {
+        this.code = apiResponseCodes.getCode();
+        this.description = apiResponseCodes.getDescription();
+        setObject(object);
+    }
 }
-
