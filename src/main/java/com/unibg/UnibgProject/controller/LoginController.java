@@ -19,11 +19,12 @@ public class LoginController {
         ApiResponse response = new ApiResponse();
         try {
             utente = loginService.saveRegistrazione(utente);
-            response.setObject(utente);
-            return response;
+            response.setObject(utente,ApiResponseCodes.SUCCESS);
+
         } catch (Exception e) {
-            return null;
+            response.setObject(null,ApiResponseCodes.ERROR);
         }
+        return response;
     }
 
     @PostMapping("/profilehomepage")
@@ -61,11 +62,13 @@ public class LoginController {
 
     @PostMapping("/logout")
     public ApiResponse logout(HttpSession session) {
+        ApiResponse response = new ApiResponse();
         try {
             session.invalidate();
+            response.setObject(null, ApiResponseCodes.SUCCESS);
         } catch (IllegalStateException ex) {
             System.out.println("Error: " + ex);
         }
-        return new ApiResponse(ApiResponseCodes.SUCCESS);
+        return response;
     }
 }

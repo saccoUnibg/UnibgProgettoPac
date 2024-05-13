@@ -13,4 +13,10 @@ public class Ricerca {
     private String arrivo;
     private String data;
     private String mail;
+
+    public Ricerca(String partenza,String arrivo, String data, String mail){
+        this.partenza = partenza;
+        this.arrivo = arrivo;
+        this.data = data;
+    }
 }

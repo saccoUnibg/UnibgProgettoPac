@@ -1,14 +1,13 @@
 package com.unibg.UnibgProject.utils;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
-
-@JsonSerialize
 @Getter
 @Setter
+@JsonSerialize
 public class ApiResponse {
 
     private String code;
@@ -26,6 +25,7 @@ public class ApiResponse {
     public void setObject(Object object, ApiResponseCodes apiResponseCodes) {
         this.code = apiResponseCodes.getCode();
         this.description = apiResponseCodes.getDescription();
-        setObject(object);
+        this.object = object;
     }
+
 }
