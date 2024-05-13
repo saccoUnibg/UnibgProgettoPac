@@ -1,4 +1,4 @@
-package com.unibg.UnibgProject.Entity;
+package com.unibg.UnibgProject.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
