@@ -1,7 +1,7 @@
 package com.unibg.UnibgProject.services.impl;
 
-import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
-import com.unibg.UnibgProject.Entity.VoloEntity;
+import com.unibg.UnibgProject.entity.PrenotazioneEntity;
+import com.unibg.UnibgProject.entity.VoloEntity;
 import com.unibg.UnibgProject.model.Prenotazione;
 import com.unibg.UnibgProject.model.Ricerca;
 

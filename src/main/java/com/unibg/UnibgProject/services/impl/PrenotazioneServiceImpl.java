@@ -1,7 +1,7 @@
 package com.unibg.UnibgProject.services.impl;
 
-import com.unibg.UnibgProject.Entity.CheckinEntity;
-import com.unibg.UnibgProject.Entity.PrenotazioneEntity;
+import com.unibg.UnibgProject.entity.CheckinEntity;
+import com.unibg.UnibgProject.entity.PrenotazioneEntity;
 import com.unibg.UnibgProject.model.Checkin;
 import com.unibg.UnibgProject.model.Prenotazione;
 import com.unibg.UnibgProject.repository.CheckinRepository;

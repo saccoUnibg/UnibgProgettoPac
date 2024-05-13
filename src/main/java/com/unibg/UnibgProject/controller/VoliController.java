@@ -1,6 +1,6 @@
 package com.unibg.UnibgProject.controller;
 
-import com.unibg.UnibgProject.Entity.VoloEntity;
+import com.unibg.UnibgProject.entity.VoloEntity;
 import com.unibg.UnibgProject.model.Ricerca;
 import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.services.VoliService;

@@ -1,6 +1,6 @@
 package com.unibg.UnibgProject.repository;
 
-import com.unibg.UnibgProject.Entity.VoloEntity;
+import com.unibg.UnibgProject.entity.VoloEntity;
 import com.unibg.UnibgProject.model.Volo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

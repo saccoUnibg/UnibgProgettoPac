@@ -1,6 +1,6 @@
 package com.unibg.UnibgProject.controller;
 
-import com.unibg.UnibgProject.Entity.UtenteEntity;
+import com.unibg.UnibgProject.entity.UtenteEntity;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.utils.UtilsGeneric;

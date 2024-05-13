@@ -1,6 +1,6 @@
 package com.unibg.UnibgProject.repository;
 
-import com.unibg.UnibgProject.Entity.UtenteEntity;
+import com.unibg.UnibgProject.entity.UtenteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
