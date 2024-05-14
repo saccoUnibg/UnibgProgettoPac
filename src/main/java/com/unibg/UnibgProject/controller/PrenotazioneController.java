@@ -38,7 +38,7 @@ public class PrenotazioneController {
     }
 
     @PostMapping("/check-in")
-    public ApiResponse checkIn(@RequestBody Prenotazione prenotazione, HttpSession session,Model model) {
+    public ApiResponse checkIn(@RequestBody Prenotazione prenotazione, HttpSession session) {
         ApiResponse response = new ApiResponse();
         try{
             //Imposto id_volo nella prenotazione (preso da session) e la salvo
@@ -65,41 +65,47 @@ public class PrenotazioneController {
     }
 
     @PostMapping("/success")
-    public String saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
+    public ApiResponse saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
+        ApiResponse response = new ApiResponse();
+
         try{
             String mail=(String) session.getAttribute("mail");
             String idPrenotazione = (String) session.getAttribute("id_prenotazione");
             prenotazioneService.saveCheckin(checkinList.getCheckinList(),mail,idPrenotazione);
             Utente utente = loginService.findByMail(mail);
-
-            model.addAttribute(utente);
+            response.setObject(utente,ApiResponseCodes.SUCCESS);
         } catch(Exception e){
-            return "error";
+            response.setObject(null,ApiResponseCodes.SUCCESS);
         }
-        return "login/profilehomepage";
+        return response;
     }
 
     @GetMapping("/visualizza")
-    public String visualizzaPrenotazioni(HttpSession session, Model model){
+    public ApiResponse visualizzaPrenotazioni(HttpSession session, Model model){
 
-        //Ottengo lista delle prenotazioni effettuate da una utenza via mail
-        List<Prenotazione> prenotazioneList =
-                prenotazioneService.getVoliPrenotatiByMail((String)session.getAttribute("mail"));
+        ApiResponse response = new ApiResponse();
+        try{
+            //Ottengo lista delle prenotazioni effettuate da una utenza via mail
+            List<Prenotazione> prenotazioneList =
+                    prenotazioneService.getVoliPrenotatiByMail((String)session.getAttribute("mail"));
 
-        // Ottengo i dettagli dei voli delle prenotazioni effettuate
-        List<Volo> listaVoli =
-                voliService.getVoliByPrenotazioni(prenotazioneList);
+            // Ottengo i dettagli dei voli delle prenotazioni effettuate
+            List<Volo> listaVoli =
+                    voliService.getVoliByPrenotazioni(prenotazioneList);
 
-        // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
-        Map<String,String> idPrenotazioniAndVoli = new HashMap<>();
-        for(Prenotazione temp: prenotazioneList){
-            idPrenotazioniAndVoli.put(temp.getIdVolo(),temp.getId());
+            // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
+            Map<String,String> idPrenotazioniAndVoli = new HashMap<>();
+            for(Prenotazione temp: prenotazioneList){
+                idPrenotazioniAndVoli.put(temp.getIdVolo(),temp.getId());
+            }
+            session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
+
+            response.setObject(listaVoli,ApiResponseCodes.SUCCESS);
+        } catch (Exception e){
+            response.setObject(null,ApiResponseCodes.ERROR);
         }
-        session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
-        model.addAttribute("listaVoli",listaVoli);
-
-        return "prenotazione/visualizzaprenotazioni";
+        return response;
     }
 
     @PostMapping("/elimina")
