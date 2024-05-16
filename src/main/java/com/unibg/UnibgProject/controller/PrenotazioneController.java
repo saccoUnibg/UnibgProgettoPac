@@ -22,10 +22,8 @@ public class PrenotazioneController {
 
     @Autowired
     PrenotazioneService prenotazioneService;
-
     @Autowired
     LoginService loginService;
-
     @Autowired
     VoliService voliService;
 
