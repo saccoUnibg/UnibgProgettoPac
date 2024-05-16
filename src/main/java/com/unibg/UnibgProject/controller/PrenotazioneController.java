@@ -33,7 +33,7 @@ public class PrenotazioneController {
     public ApiResponse creaPrenotazione(@RequestBody Volo volo, HttpSession session) {
         ApiResponse response = new ApiResponse();
         session.setAttribute("id_volo",volo.getId());
-        response.setObject(null,ApiResponseCodes.SUCCESS);
+        response.setObject(null);
         return response;
     }
 
@@ -57,9 +57,9 @@ public class PrenotazioneController {
             CheckinList checkinList = new CheckinList();
             checkinList.setCheckinList(tempList);
             //aggiungo la lista al model da restituire al fe
-            response.setObject(checkinList,ApiResponseCodes.SUCCESS);
+            response.setObject(checkinList);
         } catch(Exception e){
-            response.setObject(null,ApiResponseCodes.ERROR);
+            response.setErrorMessage(e.toString());
         }
         return response;
     }
@@ -73,9 +73,9 @@ public class PrenotazioneController {
             String idPrenotazione = (String) session.getAttribute("id_prenotazione");
             prenotazioneService.saveCheckin(checkinList.getCheckinList(),mail,idPrenotazione);
             Utente utente = loginService.findByMail(mail);
-            response.setObject(utente,ApiResponseCodes.SUCCESS);
+            response.setObject(utente);
         } catch(Exception e){
-            response.setObject(null,ApiResponseCodes.SUCCESS);
+            response.setErrorMessage(e.toString());
         }
         return response;
     }
@@ -100,9 +100,9 @@ public class PrenotazioneController {
             }
             session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
-            response.setObject(listaVoli,ApiResponseCodes.SUCCESS);
+            response.setObject(listaVoli);
         } catch (Exception e){
-            response.setObject(null,ApiResponseCodes.ERROR);
+            response.setErrorMessage(e.toString());
         }
 
         return response;

@@ -1,10 +1,12 @@
 package com.unibg.UnibgProject.controller;
 
+import com.unibg.UnibgProject.entity.VoloEntity;
 import com.unibg.UnibgProject.model.Ricerca;
 import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.services.VoliService;
 import com.unibg.UnibgProject.utils.ApiResponse;
 import com.unibg.UnibgProject.utils.ApiResponseCodes;
+import com.unibg.UnibgProject.utils.Coppia;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,19 +34,18 @@ public class VoliController {
         Ricerca ricerca = new Ricerca(partenza,arrivo,data,(String) session.getAttribute("mail"),scalo,scalo_min,scalo_max);
         try{
             ricerca.setMail((String) session.getAttribute("mail"));
-            List<Volo> listaVoli = new ArrayList<>();
 
             // Implementazione di due metodi differenti per semplificare le operazioni di modifica su entrambi i metodi (NO long method)
             if(ricerca.getScalo().equalsIgnoreCase("false")){
-                listaVoli = voliService.ricercaVoli(ricerca);
+                List<Volo> listaVoli = voliService.ricercaVoli(ricerca);
+                response.setObject(listaVoli);
             } else{
-                listaVoli = voliService.ricercaVoliScalo(ricerca);
+                List<Coppia<VoloEntity,VoloEntity>> listaVoli = voliService.ricercaVoliScalo(ricerca);
+                response.setObject(listaVoli);
             }
-
-            response.setObject(listaVoli, ApiResponseCodes.SUCCESS);
+            response.setMessage("listaVoli API call: success");
         } catch(Exception e){
-            response.setObject(null, ApiResponseCodes.ERROR);
-            response.setMessage(e.toString());
+            response.setErrorMessage(e.toString());
         }
         return response;
     }

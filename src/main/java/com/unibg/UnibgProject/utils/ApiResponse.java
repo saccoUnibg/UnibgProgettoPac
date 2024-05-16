@@ -12,9 +12,10 @@ public class ApiResponse {
 
     private String code;
     private String description;
+    private String message;
 
     private Object object;
-    private String message;
+
     public ApiResponse(){
     }
 
@@ -22,10 +23,15 @@ public class ApiResponse {
         this.code = apiResponseCodes.getCode();
         this.description = apiResponseCodes.getDescription();
     }
-    public void setObject(Object object, ApiResponseCodes apiResponseCodes) {
-        this.code = apiResponseCodes.getCode();
-        this.description = apiResponseCodes.getDescription();
+    public void setObject(Object object) {
+        this.code = ApiResponseCodes.SUCCESS.getCode();
+        this.description = ApiResponseCodes.SUCCESS.getDescription();
         this.object = object;
     }
 
+    public void setErrorMessage(String errorMessage){
+        this.code = ApiResponseCodes.ERROR.getCode();
+        this.description = ApiResponseCodes.ERROR.getDescription();
+        this.message = errorMessage;
+    }
 }

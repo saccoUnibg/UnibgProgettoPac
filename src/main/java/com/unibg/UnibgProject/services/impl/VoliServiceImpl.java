@@ -106,7 +106,7 @@ public class VoliServiceImpl implements VoliService {
     }
 
     @Override
-    public List<Volo> ricercaVoliScalo(Ricerca ricerca) {
+    public List<Coppia<VoloEntity,VoloEntity>> ricercaVoliScalo(Ricerca ricerca) {
 
         // Algoritmo di ricerca voli (vedi "resources/Utils/algoritmo.txt")
 
@@ -165,7 +165,7 @@ public class VoliServiceImpl implements VoliService {
             }
         }
 
-        return List.of();
+        return listaCoppieVoli;
     }
 
 

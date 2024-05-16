@@ -19,10 +19,10 @@ public class LoginController {
         ApiResponse response = new ApiResponse();
         try {
             utente = loginService.saveRegistrazione(utente);
-            response.setObject(utente,ApiResponseCodes.SUCCESS);
+            response.setObject(utente);
 
         } catch (Exception e) {
-            response.setObject(null,ApiResponseCodes.ERROR);
+            response.setErrorMessage(e.toString());
         }
         return response;
     }
@@ -42,9 +42,9 @@ public class LoginController {
                 utente = loginService.findByMail((String) session.getAttribute("mail"));
             }
             session.setAttribute("utente", utente);
-            response.setObject(utente, ApiResponseCodes.SUCCESS);
+            response.setObject(utente);
         } catch (Exception e) {
-            return null;
+            response.setErrorMessage(e.toString());
         }
         return response;
     }
@@ -65,7 +65,7 @@ public class LoginController {
         ApiResponse response = new ApiResponse();
         try {
             session.invalidate();
-            response.setObject(null, ApiResponseCodes.SUCCESS);
+            response.setObject(null);
         } catch (IllegalStateException ex) {
             System.out.println("Error: " + ex);
         }

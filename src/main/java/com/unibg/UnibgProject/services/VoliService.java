@@ -5,6 +5,7 @@ import com.unibg.UnibgProject.entity.VoloEntity;
 import com.unibg.UnibgProject.model.Prenotazione;
 import com.unibg.UnibgProject.model.Ricerca;
 import com.unibg.UnibgProject.model.Volo;
+import com.unibg.UnibgProject.utils.Coppia;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface VoliService {
 
      Volo getVoloById(Long id);
 
-     List<Volo> ricercaVoliScalo(Ricerca ricerca);
+     List<Coppia<VoloEntity,VoloEntity>> ricercaVoliScalo(Ricerca ricerca);
 }
