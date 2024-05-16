@@ -3,7 +3,6 @@ package com.unibg.UnibgProject.controller;
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.utils.ApiResponse;
-import com.unibg.UnibgProject.utils.ApiResponseCodes;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,8 +65,8 @@ public class LoginController {
         try {
             session.invalidate();
             response.setObject(null);
-        } catch (IllegalStateException ex) {
-            System.out.println("Error: " + ex);
+        } catch (IllegalStateException e) {
+            response.setErrorMessage(e.toString());
         }
         return response;
     }
