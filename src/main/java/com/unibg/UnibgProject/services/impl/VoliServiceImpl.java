@@ -9,12 +9,19 @@ import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.repository.PrenotazioneRepository;
 import com.unibg.UnibgProject.repository.VoliRepository;
 import com.unibg.UnibgProject.services.VoliService;
+import com.unibg.UnibgProject.utils.Coppia;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,6 +34,7 @@ public class VoliServiceImpl implements VoliService {
     PrenotazioneRepository prenotazioneRepository;
     @Override
     public List<Volo> ricercaVoli(Ricerca ricerca) {
+
         List<VoloEntity> voliEntitylist = voliRepository.findByPartenzaAndArrivoIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getArrivo(),ricerca.getData());
         List<Volo> voliList = new ArrayList<>();
         for(VoloEntity tempEntity: voliEntitylist){
@@ -96,5 +104,69 @@ public class VoliServiceImpl implements VoliService {
         volo.setId(voloEntity.getId().toString());
         return volo;
     }
+
+    @Override
+    public List<Volo> ricercaVoliScalo(Ricerca ricerca) {
+
+        // Algoritmo di ricerca voli (vedi "resources/Utils/algoritmo.txt")
+
+        // Voli da P a S
+        List<VoloEntity> partenzaToScaloList = voliRepository.findByPartenzaIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getData());
+
+        // Lista possibili scali da P a S
+        Set<String> scaliVolo1 = new HashSet<>();
+        for(VoloEntity temp: partenzaToScaloList){
+            scaliVolo1.add(temp.getArrivo());
+        }
+
+        // Voli da S a P
+        List<VoloEntity> scaloToArrivoList = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(),ricerca.getData());
+
+        // Lista possibili scali da S a A
+        Set<String>scaliVolo2 = new HashSet<>();
+        for(VoloEntity temp: scaloToArrivoList){
+            scaliVolo2.add(temp.getPartenza());
+        }
+
+        // Citta scalo possibili (intersezione tra due liste scali possibili)
+        List<String> scali = scaliVolo1.stream()
+                .filter(scaliVolo2::contains)
+                .toList();
+
+        // Filtro lista1 con "arrivo" che deve essere dentro lista "scali"
+
+        partenzaToScaloList.removeIf(
+                temp -> !scali.contains(temp.getArrivo())
+        );
+
+        scaloToArrivoList.removeIf(
+                temp-> !scali.contains(temp.getPartenza())
+        );
+
+        // Abbiamo le due liste con i soli scali, dobbiamo fare una lista di coppie di voli
+
+        List<Coppia<VoloEntity,VoloEntity>> listaCoppieVoli = new ArrayList<>();
+
+        for(VoloEntity temp1: partenzaToScaloList){
+            for(VoloEntity temp2: scaloToArrivoList){
+
+                LocalTime time1 = LocalTime.parse(temp1.getH_arrivo());
+                LocalTime time2 = LocalTime.parse(temp2.getH_partenza());
+                Duration duration = Duration.between(time1,time2);
+                Long minutiDiScalo = duration.toMinutes();
+                if(minutiDiScalo<0){
+                    continue;
+                }
+                if( temp1.getArrivo().equalsIgnoreCase(temp2.getPartenza()) &&
+                        minutiDiScalo>Integer.parseInt(ricerca.getScalo_min())&&
+                        minutiDiScalo<Integer.parseInt(ricerca.getScalo_max())){
+                            listaCoppieVoli.add(new Coppia<>(temp1,temp2));
+                }
+            }
+        }
+
+        return List.of();
+    }
+
 
 }

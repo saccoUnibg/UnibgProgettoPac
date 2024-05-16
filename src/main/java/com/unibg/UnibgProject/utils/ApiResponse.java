@@ -14,7 +14,7 @@ public class ApiResponse {
     private String description;
 
     private Object object;
-
+    private String message;
     public ApiResponse(){
     }
 

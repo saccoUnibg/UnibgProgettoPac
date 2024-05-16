@@ -17,4 +17,6 @@ public interface VoliService {
      List<Volo> getVoliByPrenotazioni(List<Prenotazione> prenotazioneList);
 
      Volo getVoloById(Long id);
+
+     List<Volo> ricercaVoliScalo(Ricerca ricerca);
 }

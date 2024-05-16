@@ -1,0 +1,36 @@
+
+Algoritmo per la ricerca di voli con presenza di scali
+
+- all'utente viene richiesto di inserire un check (booleano) con la possibilita' di fare scali
+
+ VEDI "src/main/java/com/unibg/UnibgProject/services/impl/VoliServiceImpl.java"
+
+L'esempio sara' impostato secondo un viaggio da Londra a Los Angeles, con scalo a New York o Washington
+
+- - - - - - - - - - - - - - - - - - - - - - - -
+Se scalo = false:
+
+La ricerca avverra' linearmente, ovvero cercando tra i voli disponibili in db secondo i parametri inseriti dall'utente
+
+- - - - - - - - - - - - - - - - - - - - - - - -
+Se scalo = true:
+
+Partenza: P, Scalo: S, Arrivo: A
+
+    - ricerca voli  P  -> S  per il giorno desiderato -> LISTA 1
+    - ricerca voli  S  -> A  per il giorno desiderato -> LISTA 2
+
+    - per ogni volo della LISTA 1 verifico che lo scalo sia presente nella LISTA 2
+
+    -
+
+Esempio concettuale:
+
+Londra: LN, New York: NY, Washington: WA, Los Angeles: LA
+
+Io ho diversi voli:
+
+        LN -> NY + NY -> LA
+        LN -> WA + WA -> LA
+
+
