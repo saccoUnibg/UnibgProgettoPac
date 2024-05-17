@@ -14,14 +14,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -40,7 +38,7 @@ public class VoliServiceImpl implements VoliService {
         for(VoloEntity tempEntity: voliEntitylist){
            Volo temp = new Volo();
             BeanUtils.copyProperties(tempEntity,temp);
-            temp.setId(tempEntity.getId().toString());
+            // temp.setId(tempEntity.getId().toString());
             voliList.add(temp);
         }
 
@@ -69,7 +67,7 @@ public class VoliServiceImpl implements VoliService {
         for (VoloEntity tempEntity: voloEntityList) {
             Volo temp = new Volo();
             BeanUtils.copyProperties(tempEntity,temp);
-            temp.setId(tempEntity.getId().toString());
+            // temp.setId(tempEntity.getId().toString());
             voloList.add(temp);
         }
         return voloList;
@@ -90,7 +88,7 @@ public class VoliServiceImpl implements VoliService {
         for (VoloEntity tempEntity: voloEntityList) {
             Volo temp = new Volo();
             BeanUtils.copyProperties(tempEntity,temp);
-            temp.setId(tempEntity.getId().toString());
+            // temp.setId(tempEntity.getId().toString());
             voloList.add(temp);
         }
 
@@ -101,30 +99,46 @@ public class VoliServiceImpl implements VoliService {
         VoloEntity voloEntity = voliRepository.findById(idVolo);
         Volo volo = new Volo();
         BeanUtils.copyProperties(voloEntity,volo);
-        volo.setId(voloEntity.getId().toString());
+        // volo.setId(voloEntity.getId().toString());
         return volo;
     }
 
     @Override
-    public List<Coppia<VoloEntity,VoloEntity>> ricercaVoliScalo(Ricerca ricerca) {
+    public List<Coppia<Volo,Volo>> ricercaVoliScalo(Ricerca ricerca) {
 
         // Algoritmo di ricerca voli (vedi "resources/Utils/algoritmo.txt")
 
         // Voli da P a S
-        List<VoloEntity> partenzaToScaloList = voliRepository.findByPartenzaIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getData());
+        List<VoloEntity> partenzaToScaloListEntity = voliRepository.findByPartenzaIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getData());
+
+        List<Volo> partenzaToScaloList = new ArrayList<>();
+        // Conversione DTO
+        for(VoloEntity tempEntity: partenzaToScaloListEntity){
+            Volo temp = new Volo();
+            BeanUtils.copyProperties(tempEntity,temp);
+            partenzaToScaloList.add(temp);
+        }
 
         // Lista possibili scali da P a S
         Set<String> scaliVolo1 = new HashSet<>();
-        for(VoloEntity temp: partenzaToScaloList){
+        for(Volo temp: partenzaToScaloList){
             scaliVolo1.add(temp.getArrivo());
         }
 
         // Voli da S a P
-        List<VoloEntity> scaloToArrivoList = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(),ricerca.getData());
+        List<VoloEntity> scaloToArrivoListEntity = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(),ricerca.getData());
+
+        List<Volo> scaloToArrivoList = new ArrayList<>();
+        //Conversione DTO
+        for(VoloEntity tempEntity: scaloToArrivoListEntity){
+            Volo temp = new Volo();
+            BeanUtils.copyProperties(tempEntity,temp);
+            scaloToArrivoList.add(temp);
+        }
 
         // Lista possibili scali da S a A
         Set<String>scaliVolo2 = new HashSet<>();
-        for(VoloEntity temp: scaloToArrivoList){
+        for(Volo temp: scaloToArrivoList){
             scaliVolo2.add(temp.getPartenza());
         }
 
@@ -145,15 +159,15 @@ public class VoliServiceImpl implements VoliService {
 
         // Abbiamo le due liste con i soli scali, dobbiamo fare una lista di coppie di voli
 
-        List<Coppia<VoloEntity,VoloEntity>> listaCoppieVoli = new ArrayList<>();
+        List<Coppia<Volo,Volo>> listaCoppieVoli = new ArrayList<>();
 
-        for(VoloEntity temp1: partenzaToScaloList){
-            for(VoloEntity temp2: scaloToArrivoList){
+        for(Volo temp1: partenzaToScaloList){
+            for(Volo temp2: scaloToArrivoList){
 
                 LocalTime time1 = LocalTime.parse(temp1.getH_arrivo());
                 LocalTime time2 = LocalTime.parse(temp2.getH_partenza());
                 Duration duration = Duration.between(time1,time2);
-                Long minutiDiScalo = duration.toMinutes();
+                long minutiDiScalo = duration.toMinutes();
                 if(minutiDiScalo<0){
                     continue;
                 }
@@ -167,6 +181,5 @@ public class VoliServiceImpl implements VoliService {
 
         return listaCoppieVoli;
     }
-
 
 }

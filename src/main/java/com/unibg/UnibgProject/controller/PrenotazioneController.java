@@ -5,7 +5,6 @@ import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
 import com.unibg.UnibgProject.services.VoliService;
 import com.unibg.UnibgProject.utils.ApiResponse;
-import com.unibg.UnibgProject.utils.ApiResponseCodes;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -110,7 +109,7 @@ public class PrenotazioneController {
     public String eliminaPrenotazione(@ModelAttribute("volo") Volo volo, HttpSession session, Model model){
 
         // una volta confermato, cancello tutto ciò che è legato alla mail per quel id_volo (prenotazione + checkIn di ogni persona)
-        String idVolo = volo.getId();
+        Long idVolo = volo.getId();
         session.setAttribute("id_volo",idVolo);
 
         model.addAttribute("volo",volo);

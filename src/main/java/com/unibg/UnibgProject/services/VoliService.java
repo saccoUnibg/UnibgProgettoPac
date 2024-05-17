@@ -19,5 +19,5 @@ public interface VoliService {
 
      Volo getVoloById(Long id);
 
-     List<Coppia<VoloEntity,VoloEntity>> ricercaVoliScalo(Ricerca ricerca);
+     List<Coppia<Volo,Volo>> ricercaVoliScalo(Ricerca ricerca);
 }

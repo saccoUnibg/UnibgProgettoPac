@@ -5,13 +5,11 @@ import com.unibg.UnibgProject.model.Ricerca;
 import com.unibg.UnibgProject.model.Volo;
 import com.unibg.UnibgProject.services.VoliService;
 import com.unibg.UnibgProject.utils.ApiResponse;
-import com.unibg.UnibgProject.utils.ApiResponseCodes;
 import com.unibg.UnibgProject.utils.Coppia;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,7 +38,7 @@ public class VoliController {
                 List<Volo> listaVoli = voliService.ricercaVoli(ricerca);
                 response.setObject(listaVoli);
             } else{
-                List<Coppia<VoloEntity,VoloEntity>> listaVoli = voliService.ricercaVoliScalo(ricerca);
+                List<Coppia<Volo,Volo>> listaVoli = voliService.ricercaVoliScalo(ricerca);
                 response.setObject(listaVoli);
             }
             response.setMessage("listaVoli API call: success");

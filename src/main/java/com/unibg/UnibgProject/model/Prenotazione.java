@@ -13,4 +13,5 @@ public class Prenotazione {
     private String mail;
     private String spesa_totale;
 
+
 }

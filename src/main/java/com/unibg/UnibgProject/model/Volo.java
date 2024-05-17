@@ -8,7 +8,7 @@ import lombok.Setter;
 
 public class Volo {
 
-    private String id;
+    private Long id;
     private String partenza;
     private String arrivo;
     private String data;
