@@ -6,14 +6,14 @@
 </head>
 <body>
   <div align="center">
-      <form action="#" th:action="@{/profilehomepage}" method="post" modelAttribute="utente">
+      <form th:action="@{/login}" method="post" modelAttribute="utente">
           <div class="container">
               <h1>Login</h1>
               <hr>
               <label>Email</label>
-              <input type="text" placeholder="mail" name="mail" required>
+              <input type="text" placeholder="mail" name="username" required>
               <label for="psw"><b>Password</b></label>
-              <input type="password" placeholder="Password" name="psw" id="psw" required>
+              <input type="password" placeholder="Password" name="password" id="psw" required>
               <hr>
               <button type="submit" class="registerbtn">Login</button>
           </div>

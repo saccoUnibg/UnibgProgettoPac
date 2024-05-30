@@ -11,16 +11,16 @@
         <h2>Anagrafica utente</h2>
 
         <p><b>Nome: </b></p>
-        <p th:text="${utente.nome}"></p>
+        <p th:text="${utente?.nome}"></p>
 
         <h4>Cognome: </h4>
-        <p th:text="${utente.cognome}"></p>
+        <p th:text="${utente?.cognome}"></p>
 
         <h4>Indirizzo e-mail: </h4>
-        <p th:text="${utente.mail}"></p>
+        <p th:text="${utente?.mail}"></p>
 
         <h4>Codice Fiscale: </h4>
-        <p th:text="${utente.cf}"></p>
+        <p th:text="${utente?.cf}"></p>
 
         <hr>
 

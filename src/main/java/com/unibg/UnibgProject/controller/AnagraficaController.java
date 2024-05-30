@@ -50,6 +50,8 @@ public class AnagraficaController {
         UtenteEntity utenteEntity = (UtenteEntity) session.getAttribute("utente");
         if (anagraficaService.eliminaAnagrafica(utenteEntity)) {
             System.out.println("Utente eliminato con successo");
+            session.removeAttribute("utente");
+            model.asMap().remove("utente");
         } else {
             System.out.println("Errore durante eliminazione dell'utente");
         }
