@@ -26,7 +26,7 @@ public class LoginController {
         return response;
     }
 
-    @PostMapping("/profilehomepage")
+    @PostMapping("/login")
     public ApiResponse loginForm(@RequestBody Utente utente, HttpSession session) {
         ApiResponse response = new ApiResponse();
         try {
