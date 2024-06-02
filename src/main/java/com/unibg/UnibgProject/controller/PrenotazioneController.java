@@ -4,9 +4,11 @@ import com.unibg.UnibgProject.model.*;
 import com.unibg.UnibgProject.services.LoginService;
 import com.unibg.UnibgProject.services.PrenotazioneService;
 import com.unibg.UnibgProject.services.VoliService;
-import com.unibg.UnibgProject.utils.ApiResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/prenotazioni")
 public class PrenotazioneController {
@@ -27,16 +30,13 @@ public class PrenotazioneController {
     VoliService voliService;
 
     @PostMapping("/crea")
-    public ApiResponse creaPrenotazione(@RequestBody Volo volo, HttpSession session) {
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> creaPrenotazione(@RequestBody Volo volo, HttpSession session) {
         session.setAttribute("id_volo",volo.getId());
-        response.setObject(null);
-        return response;
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PostMapping("/check-in")
-    public ApiResponse checkIn(@RequestBody Prenotazione prenotazione, HttpSession session) {
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> checkIn(@RequestBody Prenotazione prenotazione, HttpSession session) {
         try{
             //Imposto id_volo nella prenotazione (preso da session) e la salvo
             prenotazione.setIdVolo((String)session.getAttribute("id_volo"));
@@ -54,33 +54,29 @@ public class PrenotazioneController {
             CheckinList checkinList = new CheckinList();
             checkinList.setCheckinList(tempList);
             //aggiungo la lista al model da restituire al fe
-            response.setObject(checkinList);
+            return ResponseEntity.status(HttpStatus.OK).body(checkinList);
         } catch(Exception e){
-            response.setErrorMessage(e.toString());
+            log.error("Error in checkIn: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-        return response;
     }
 
     @PostMapping("/success")
-    public ApiResponse saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
-        ApiResponse response = new ApiResponse();
-
+    public ResponseEntity<?> saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
         try{
             String mail=(String) session.getAttribute("mail");
             String idPrenotazione = (String) session.getAttribute("id_prenotazione");
             prenotazioneService.saveCheckin(checkinList.getCheckinList(),mail,idPrenotazione);
             Utente utente = loginService.findByMail(mail);
-            response.setObject(utente);
+            return ResponseEntity.status(HttpStatus.OK).body(utente);
         } catch(Exception e){
-            response.setErrorMessage(e.toString());
+            log.error("Error in saveCheckin: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-        return response;
     }
 
     @GetMapping("/visualizza")
-    public ApiResponse visualizzaPrenotazioni(HttpSession session, Model model){
-
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> visualizzaPrenotazioni(HttpSession session, Model model){
         try{
             //Ottengo lista delle prenotazioni effettuate da una utenza via mail
             List<Prenotazione> prenotazioneList =
@@ -97,12 +93,11 @@ public class PrenotazioneController {
             }
             session.setAttribute("idPrenotazioniAndVoli",idPrenotazioniAndVoli);
 
-            response.setObject(listaVoli);
+            return ResponseEntity.status(HttpStatus.OK).body(listaVoli);
         } catch (Exception e){
-            response.setErrorMessage(e.toString());
+            log.error("Error in visualizzaPrenotazioni: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-
-        return response;
     }
 
     @PostMapping("/elimina")

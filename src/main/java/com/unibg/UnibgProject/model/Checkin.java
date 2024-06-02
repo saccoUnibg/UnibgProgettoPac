@@ -3,10 +3,12 @@ package com.unibg.UnibgProject.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 
-public class Checkin {
+public class Checkin implements Serializable {
 
     private String mail;
     private String nome;

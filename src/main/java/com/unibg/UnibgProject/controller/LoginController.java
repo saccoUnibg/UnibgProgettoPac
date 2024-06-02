@@ -2,11 +2,14 @@ package com.unibg.UnibgProject.controller;
 
 import com.unibg.UnibgProject.model.Utente;
 import com.unibg.UnibgProject.services.LoginService;
-import com.unibg.UnibgProject.utils.ApiResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 public class LoginController {
 
@@ -14,21 +17,20 @@ public class LoginController {
     LoginService loginService;
 
     @PostMapping("/registrazioneform")
-    public ApiResponse registrazioneForm(@RequestBody Utente utente) {
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> registrazioneForm(@RequestBody Utente utente) {
         try {
             utente = loginService.saveRegistrazione(utente);
-            response.setObject(utente);
+            return ResponseEntity.status(HttpStatus.OK).body(utente);
 
         } catch (Exception e) {
-            response.setErrorMessage(e.toString());
+            log.error("Error in registrazioneForm: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-        return response;
+
     }
 
     @PostMapping("/login")
-    public ApiResponse loginForm(@RequestBody Utente utente, HttpSession session) {
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> loginForm(@RequestBody Utente utente, HttpSession session) {
         try {
             if (session.getAttribute("mail") == null) {
                 utente = loginService.login(utente);
@@ -41,11 +43,11 @@ public class LoginController {
                 utente = loginService.findByMail((String) session.getAttribute("mail"));
             }
             session.setAttribute("utente", utente);
-            response.setObject(utente);
+            return ResponseEntity.status(HttpStatus.OK).body(utente);
         } catch (Exception e) {
-            response.setErrorMessage(e.toString());
+            log.error("Error in loginForm: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-        return response;
     }
 
 //    @GetMapping("/profilehomepage")
@@ -60,14 +62,13 @@ public class LoginController {
 //    }
 
     @PostMapping("/logout")
-    public ApiResponse logout(HttpSession session) {
-        ApiResponse response = new ApiResponse();
+    public ResponseEntity<?> logout(HttpSession session) {
         try {
             session.invalidate();
-            response.setObject(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (IllegalStateException e) {
-            response.setErrorMessage(e.toString());
+            log.error("Error in logout: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-        return response;
     }
 }

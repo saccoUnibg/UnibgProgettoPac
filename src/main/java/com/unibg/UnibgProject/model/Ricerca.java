@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @JsonSerialize
-public class Ricerca {
+public class Ricerca implements Serializable {
 
     private String partenza;
     private String arrivo;
