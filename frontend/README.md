@@ -20,7 +20,7 @@ npm install vue-router
 npm install bootstrap
 ```
 
-## Axios
+## Axios (for GET and POST requests)
 ```
 npm install axios
 ```

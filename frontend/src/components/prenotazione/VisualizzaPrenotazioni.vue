@@ -17,7 +17,7 @@
         <tbody>
         <div>
             <tr v-if="typeof listaVoli === 'undefined' || listaVoli.length === 0">
-                <td colspan="2"> Nessun volo disponibile</td>
+                <td colspan="2">Nessun volo prenotato</td>
             </tr>
         </div>
 
@@ -54,6 +54,7 @@
         data()  {
             return {
                 listaVoli: [],
+                showModal : false,
             }
         },
         created() {
@@ -72,17 +73,18 @@
                 axios.post('http://localhost:8080/prenotazioni/elimina', volo)
                 .then(response => {
                           console.log(response);
-                          //this.eliminaSuccess(response.data);
+                          //this.eliminaConferma(volo);
+                          this.showModal = true;
                         })
                 .catch(error => {
                     console.error(error);
                     this.message = "Login fallita";
                 });
             },
-            eliminaSuccess(response){
+            eliminaConferma(response){
                 console.log(response);
                 this.$router.push({
-                    name: 'ProfileHomePage'
+                    name: 'EliminaPrenotazione'
                 })
                 .catch(error => console.error(error));
             }
