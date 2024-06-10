@@ -23,7 +23,7 @@
                 <input type="password" placeholder="Password" name="psw-repeat" id="psw-repeat" required>
                 <hr>
 
-                <button type="submit" class="registerbtn">Registrati</button>
+                <button type="submit" >Registrati</button>
             </div>
         </form>
     </div>

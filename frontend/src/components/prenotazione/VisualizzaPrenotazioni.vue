@@ -54,7 +54,6 @@
         data()  {
             return {
                 listaVoli: [],
-                showModal : false,
             }
         },
         created() {
@@ -73,16 +72,15 @@
                 axios.post('http://localhost:8080/prenotazioni/elimina', volo)
                 .then(response => {
                           console.log(response);
-                          //this.eliminaConferma(volo);
-                          this.showModal = true;
+                          this.eliminaConferma(volo);
                         })
                 .catch(error => {
                     console.error(error);
-                    this.message = "Login fallita";
                 });
             },
-            eliminaConferma(response){
-                console.log(response);
+            eliminaConferma(volo){
+                console.log(volo);
+                localStorage.setItem('voloDaEliminare', JSON.stringify(volo));
                 this.$router.push({
                     name: 'EliminaPrenotazione'
                 })

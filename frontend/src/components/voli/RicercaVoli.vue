@@ -13,7 +13,7 @@
                 <input type="date" placeholder="Data" name="data" v-model="form.data" required>
                 <hr>
 
-                <button type="submit" class="registerbtn">Cerca!</button>
+                <button type="submit" >Cerca!</button>
             </div>
         </form>
     </div>
@@ -66,7 +66,6 @@
                         })
                 .catch(error => {
                     console.error(error);
-                    this.message = "Login fallita";
                 });
             }
         }

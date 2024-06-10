@@ -7,6 +7,9 @@ import ProfileHomePage from './components/login/ProfileHomePage.vue';
 import LogoutPage from './components/login/Logout.vue';
 import RicercaVoli from './components/voli/RicercaVoli.vue';
 import VisualizzaPrenotazioni from './components/prenotazione/VisualizzaPrenotazioni.vue';
+import EliminaPrenotazione from './components/prenotazione/EliminaPrenotazione.vue';
+import EliminaSuccess from './components/prenotazione/EliminaPrenotazioneSuccess.vue';
+import CreaPrenotazione from './components/prenotazione/CreaPrenotazione.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -45,6 +48,21 @@ const router = createRouter({
             path: '/visualizza',
             name: 'VisualizzaPrenotazioni',
             component: VisualizzaPrenotazioni
+        },
+        {
+            path: '/eliminaPrenotazione',
+            name: 'EliminaPrenotazione',
+            component: EliminaPrenotazione
+        },
+        {
+            path: '/eliminaPrenotazioneSuccess',
+            name: 'EliminaSuccess',
+            component: EliminaSuccess
+        }
+        ,{
+            path: '/creaPrenotazione',
+            name: 'CreaPrenotazione',
+            component: CreaPrenotazione
         }
 
 

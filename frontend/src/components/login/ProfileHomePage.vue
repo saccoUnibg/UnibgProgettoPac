@@ -28,7 +28,7 @@
         </button>
         <br><br>
         <button
-                @click="this.$router.push('/modifica')">modifica i tuoi dati
+                @click="this.$router.push('/modifica')">Modifica i tuoi dati
         </button>
         <br><br>
     </div>

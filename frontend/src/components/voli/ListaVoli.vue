@@ -54,18 +54,17 @@
                 axios.post('http://localhost:8080/prenotazioni/crea', volo)
                 .then(response => {
                           console.log(response);
-                          this.message = response.data.nome;
-                          //this.prenotaSuccess(response.data);
+                          this.creaPrenotaSuccess(volo);
                         })
                 .catch(error => {
                     console.error(error);
-                    this.message = "Login fallita";
                 });
             },
-            prenotaSuccess(response){
-                console.log(response);
+            creaPrenotaSuccess(volo){
+                console.log(volo);
+                localStorage.setItem('voloDaPrenotare', JSON.stringify(volo));
                 this.$router.push({
-                    name: 'ProfileHomePage'
+                    name: 'CreaPrenotazione'
                 })
                 .catch(error => console.error(error));
             }
