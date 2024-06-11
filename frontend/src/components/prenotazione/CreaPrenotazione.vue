@@ -43,24 +43,26 @@
             }
         },
         created() {
-            console.log("CrePrenotazione");
+            console.log("CreaPrenotazione");
             this.volo = JSON.parse(localStorage.getItem('voloDaPrenotare'));
         },
         methods: {
             async checkIn() {
-                axios.post('http://localhost:8080//prenotazioni/check-in', {numero_biglietti: this.numero_biglietti})
+                axios.post('http://localhost:8080/prenotazioni/check-in', {id:"0", idVolo: this.volo.id, numero_biglietti: this.numero_biglietti, mail:"0", spesa_totale: this.volo.prezzo * this.numero_biglietti})
                 .then(response => {
                           console.log(response);
-                          this.CheckIn(response.data);
+                          this.checkInToConfirm(response.data);
                         })
                 .catch(error => {
                     console.error(error);
                 });
             },
-            CheckIn(response){
+            checkInToConfirm(response){
                 console.log(response);
+                console.log(response.checkinList.length);
                 this.$router.push({
-                    name: 'CreaPrenotazione'
+                    name: 'CheckIn',
+                    query: { checkInCount: response.checkinList.length}
                 })
                 .catch(error => console.error(error));
             }

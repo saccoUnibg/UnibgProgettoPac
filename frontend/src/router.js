@@ -10,6 +10,7 @@ import VisualizzaPrenotazioni from './components/prenotazione/VisualizzaPrenotaz
 import EliminaPrenotazione from './components/prenotazione/EliminaPrenotazione.vue';
 import EliminaSuccess from './components/prenotazione/EliminaPrenotazioneSuccess.vue';
 import CreaPrenotazione from './components/prenotazione/CreaPrenotazione.vue';
+import CheckIn from './components/prenotazione/CheckIn.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -63,6 +64,11 @@ const router = createRouter({
             path: '/creaPrenotazione',
             name: 'CreaPrenotazione',
             component: CreaPrenotazione
+        }
+        ,{
+            path: '/checkIn',
+            name: 'CheckIn',
+            component: CheckIn
         }
 
 
