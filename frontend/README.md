@@ -25,7 +25,7 @@ npm install bootstrap
 npm install axios
 ```
 
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development (Run frontend)
 ```
 npm run serve
 ```
