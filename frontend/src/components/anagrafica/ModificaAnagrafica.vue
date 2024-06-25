@@ -1,0 +1,24 @@
+<template>
+    <div align="center">
+        <form action="#" th:action="@{/anagrafica/modifica/success}" method="post" modelAttribute="utente">
+            <div class="container">
+                <h1>Modifica dati anagrafici</h1>
+                <hr>
+                <label> Nome </label>
+                <input type="text" name="nome" size="15"/>
+
+                <label> Cognome </label>
+                <input type="text" name="cognome" size="15"/>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Password" name="psw" id="psw" required>
+
+                <label for="psw-repeat"><b>Ripeti Password</b></label>
+                <input type="password" placeholder="Password" name="psw-repeat" id="psw-repeat" required>
+                <hr>
+
+                <button type="submit">Effettua modifica</button>
+            </div>
+        </form>
+    </div>
+</template>

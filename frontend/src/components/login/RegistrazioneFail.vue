@@ -1,14 +1,12 @@
 <template>
-    <div align="center">
-        <p>Logout effettuato con successo!</p>
-    </div>
+    <p>Errore nella registrazione: </p>
+    <ul th:text="${error}"></ul>
 </template>
 
 <script>
 export default {
-    name: 'LogoutPage',
+    name: 'SingUpFail',
     created() {
-      localStorage.clear();
       setTimeout(() => {
           this.$router.push("/"); //aspetta 2 secondi poi torna in homepage
       }, 2000);
