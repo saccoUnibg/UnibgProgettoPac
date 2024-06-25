@@ -4,6 +4,8 @@ import HomePage from './components/HomePage.vue';
 import LoginPage from './components/login/Login.vue';
 import SingUpPage from './components/login/Registrazione.vue';
 import ProfileHomePage from './components/login/ProfileHomePage.vue';
+import ModificaAnagrafica from './components/anagrafica/ModificaAnagrafica.vue';
+import ModificaAnagraficaSuccess from './components/anagrafica/ModificaAnagraficaSuccess.vue';
 import LogoutPage from './components/login/Logout.vue';
 import RicercaVoli from './components/voli/RicercaVoli.vue';
 import VisualizzaPrenotazioni from './components/prenotazione/VisualizzaPrenotazioni.vue';
@@ -34,6 +36,14 @@ const router = createRouter({
             path: '/profilehomepage',
             name: 'ProfileHomePage',
             component: ProfileHomePage
+        },
+        {
+            path: '/modifica',
+            component: ModificaAnagrafica
+        },
+        {
+            path: '/modificaSuccess',
+            component: ModificaAnagraficaSuccess
         },
         {
              path: '/logout',

@@ -40,14 +40,16 @@ export default {
                 doc_id: ''
             },
             psw_repeat: '',
-            user: Object
         }
+    },
+    created() {
+      this.form = JSON.parse(localStorage.getItem('user'));
     },
     methods: {
         async modificaAnagrafica() {
             if (this.form.psw === this.psw_repeat)
             {
-                axios.post('http://localhost:8080/registrazioneform', this.form)
+                axios.post('http://localhost:8080/anagrafica/modifica', this.form)
                     .then(response => {
                               console.log(response);
                               this.$router.push({
