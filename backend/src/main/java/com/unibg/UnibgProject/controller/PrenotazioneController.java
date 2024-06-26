@@ -101,18 +101,18 @@ public class PrenotazioneController {
     }
 
     @PostMapping("/elimina")
-    public String eliminaPrenotazione(@ModelAttribute("volo") Volo volo, HttpSession session, Model model){
+    public ResponseEntity<?> eliminaPrenotazione(@ModelAttribute("volo") Volo volo, HttpSession session, Model model){
 
         // una volta confermato, cancello tutto ciò che è legato alla mail per quel id_volo (prenotazione + checkIn di ogni persona)
         Long idVolo = volo.getId();
         session.setAttribute("id_volo",idVolo);
 
         model.addAttribute("volo",volo);
-        return "prenotazione/eliminaprenotazione";
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PostMapping("/elimina/conferma")
-    public String confermaEliminaPrenotazione(HttpSession session,Model model){
+    public ResponseEntity<?> confermaEliminaPrenotazione(HttpSession session,Model model){
         try{
             // 1. recupero informazioni dalla sessione
             String idVolo = (String) session.getAttribute("id_volo");
@@ -125,9 +125,9 @@ public class PrenotazioneController {
             prenotazioneService.deletePrenotazione(idPrenotazione);
 
         } catch (Exception e){
-            return "error";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
 
-        return "prenotazione/confermaeliminaprenotazione";
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

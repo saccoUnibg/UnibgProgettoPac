@@ -29,14 +29,23 @@ public class VoliServiceImpl implements VoliService {
 
     @Autowired
     PrenotazioneRepository prenotazioneRepository;
+
+    public Volo creaVolo(Volo voloDaCreare) {
+        VoloEntity volo = new VoloEntity();
+        BeanUtils.copyProperties(voloDaCreare, volo);
+        VoloEntity voloEntity = voliRepository.save(volo);
+        BeanUtils.copyProperties(voloEntity, voloDaCreare);
+        return voloDaCreare;
+    }
+
     @Override
     public List<Volo> ricercaVoli(Ricerca ricerca) {
 
-        List<VoloEntity> voliEntitylist = voliRepository.findByPartenzaAndArrivoIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getArrivo(),ricerca.getData());
+        List<VoloEntity> voliEntitylist = voliRepository.findByPartenzaAndArrivoIgnoreCaseAndData(ricerca.getPartenza(), ricerca.getArrivo(), ricerca.getData());
         List<Volo> voliList = new ArrayList<>();
-        for(VoloEntity tempEntity: voliEntitylist){
-           Volo temp = new Volo();
-            BeanUtils.copyProperties(tempEntity,temp);
+        for (VoloEntity tempEntity : voliEntitylist) {
+            Volo temp = new Volo();
+            BeanUtils.copyProperties(tempEntity, temp);
             // temp.setId(tempEntity.getId().toString());
             voliList.add(temp);
         }
@@ -46,7 +55,7 @@ public class VoliServiceImpl implements VoliService {
 
         List<PrenotazioneEntity> prenotazioneEntityList = prenotazioneRepository.findByMail(ricerca.getMail());
         List<String> idVoliList = new ArrayList<>();
-        for(PrenotazioneEntity temp: prenotazioneEntityList){
+        for (PrenotazioneEntity temp : prenotazioneEntityList) {
             idVoliList.add(temp.getIdVolo());
         }
 
@@ -60,12 +69,12 @@ public class VoliServiceImpl implements VoliService {
         return voliList;
     }
 
-    public List<Volo> getVoliByIdList(List<Long> idList){
-        List <VoloEntity> voloEntityList= voliRepository.findByIdIn(idList);
+    public List<Volo> getVoliByIdList(List<Long> idList) {
+        List<VoloEntity> voloEntityList = voliRepository.findByIdIn(idList);
         List<Volo> voloList = new ArrayList<>();
-        for (VoloEntity tempEntity: voloEntityList) {
+        for (VoloEntity tempEntity : voloEntityList) {
             Volo temp = new Volo();
-            BeanUtils.copyProperties(tempEntity,temp);
+            BeanUtils.copyProperties(tempEntity, temp);
             // temp.setId(tempEntity.getId().toString());
             voloList.add(temp);
         }
@@ -78,15 +87,15 @@ public class VoliServiceImpl implements VoliService {
         // 2. mi prendo gli oggetti "volo" il cui id è nella lista degli id_volo delle prenotazioni
         List<Long> idVoloList = new ArrayList<>();
 
-        for (Prenotazione temp:listaPrenotazioni) {
+        for (Prenotazione temp : listaPrenotazioni) {
             idVoloList.add(Long.valueOf(temp.getIdVolo()));
         }
-        List <VoloEntity> voloEntityList= voliRepository.findByIdIn(idVoloList);
+        List<VoloEntity> voloEntityList = voliRepository.findByIdIn(idVoloList);
 
         List<Volo> voloList = new ArrayList<>();
-        for (VoloEntity tempEntity: voloEntityList) {
+        for (VoloEntity tempEntity : voloEntityList) {
             Volo temp = new Volo();
-            BeanUtils.copyProperties(tempEntity,temp);
+            BeanUtils.copyProperties(tempEntity, temp);
             // temp.setId(tempEntity.getId().toString());
             voloList.add(temp);
         }
@@ -94,50 +103,50 @@ public class VoliServiceImpl implements VoliService {
         return voloList;
     }
 
-    public Volo getVoloById(Long idVolo){
+    public Volo getVoloById(Long idVolo) {
         VoloEntity voloEntity = voliRepository.findById(idVolo);
         Volo volo = new Volo();
-        BeanUtils.copyProperties(voloEntity,volo);
+        BeanUtils.copyProperties(voloEntity, volo);
         // volo.setId(voloEntity.getId().toString());
         return volo;
     }
 
     @Override
-    public List<Coppia<Volo,Volo>> ricercaVoliScalo(Ricerca ricerca) {
+    public List<Coppia<Volo, Volo>> ricercaVoliScalo(Ricerca ricerca) {
 
         // Algoritmo di ricerca voli (vedi "resources/Utils/algoritmo.txt")
 
         // Voli da P a S
-        List<VoloEntity> partenzaToScaloListEntity = voliRepository.findByPartenzaIgnoreCaseAndData(ricerca.getPartenza(),ricerca.getData());
+        List<VoloEntity> partenzaToScaloListEntity = voliRepository.findByPartenzaIgnoreCaseAndData(ricerca.getPartenza(), ricerca.getData());
 
         List<Volo> partenzaToScaloList = new ArrayList<>();
         // Conversione DTO
-        for(VoloEntity tempEntity: partenzaToScaloListEntity){
+        for (VoloEntity tempEntity : partenzaToScaloListEntity) {
             Volo temp = new Volo();
-            BeanUtils.copyProperties(tempEntity,temp);
+            BeanUtils.copyProperties(tempEntity, temp);
             partenzaToScaloList.add(temp);
         }
 
         // Lista possibili scali da P a S
         Set<String> scaliVolo1 = new HashSet<>();
-        for(Volo temp: partenzaToScaloList){
+        for (Volo temp : partenzaToScaloList) {
             scaliVolo1.add(temp.getArrivo());
         }
 
         // Voli da S a P
-        List<VoloEntity> scaloToArrivoListEntity = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(),ricerca.getData());
+        List<VoloEntity> scaloToArrivoListEntity = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(), ricerca.getData());
 
         List<Volo> scaloToArrivoList = new ArrayList<>();
         //Conversione DTO
-        for(VoloEntity tempEntity: scaloToArrivoListEntity){
+        for (VoloEntity tempEntity : scaloToArrivoListEntity) {
             Volo temp = new Volo();
-            BeanUtils.copyProperties(tempEntity,temp);
+            BeanUtils.copyProperties(tempEntity, temp);
             scaloToArrivoList.add(temp);
         }
 
         // Lista possibili scali da S a A
-        Set<String>scaliVolo2 = new HashSet<>();
-        for(Volo temp: scaloToArrivoList){
+        Set<String> scaliVolo2 = new HashSet<>();
+        for (Volo temp : scaloToArrivoList) {
             scaliVolo2.add(temp.getPartenza());
         }
 
@@ -153,27 +162,27 @@ public class VoliServiceImpl implements VoliService {
         );
 
         scaloToArrivoList.removeIf(
-                temp-> !scali.contains(temp.getPartenza())
+                temp -> !scali.contains(temp.getPartenza())
         );
 
         // Abbiamo le due liste con i soli scali, dobbiamo fare una lista di coppie di voli
 
-        List<Coppia<Volo,Volo>> listaCoppieVoli = new ArrayList<>();
+        List<Coppia<Volo, Volo>> listaCoppieVoli = new ArrayList<>();
 
-        for(Volo temp1: partenzaToScaloList){
-            for(Volo temp2: scaloToArrivoList){
+        for (Volo temp1 : partenzaToScaloList) {
+            for (Volo temp2 : scaloToArrivoList) {
 
                 LocalTime time1 = LocalTime.parse(temp1.getH_arrivo());
                 LocalTime time2 = LocalTime.parse(temp2.getH_partenza());
-                Duration duration = Duration.between(time1,time2);
+                Duration duration = Duration.between(time1, time2);
                 long minutiDiScalo = duration.toMinutes();
-                if(minutiDiScalo<0){
+                if (minutiDiScalo < 0) {
                     continue;
                 }
-                if( temp1.getArrivo().equalsIgnoreCase(temp2.getPartenza()) &&
-                        minutiDiScalo>Integer.parseInt(ricerca.getScalo_min())&&
-                        minutiDiScalo<Integer.parseInt(ricerca.getScalo_max())){
-                            listaCoppieVoli.add(new Coppia<>(temp1,temp2));
+                if (temp1.getArrivo().equalsIgnoreCase(temp2.getPartenza()) &&
+                        minutiDiScalo > Integer.parseInt(ricerca.getScalo_min()) &&
+                        minutiDiScalo < Integer.parseInt(ricerca.getScalo_max())) {
+                    listaCoppieVoli.add(new Coppia<>(temp1, temp2));
                 }
             }
         }

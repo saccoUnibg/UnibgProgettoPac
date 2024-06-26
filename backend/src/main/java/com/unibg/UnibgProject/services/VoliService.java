@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface VoliService {
 
+     Volo creaVolo(Volo voloDaCreare);
+
      List<Volo> ricercaVoli(Ricerca ricerca);
 
      List<Volo> getVoliByIdList(List<Long> idList);

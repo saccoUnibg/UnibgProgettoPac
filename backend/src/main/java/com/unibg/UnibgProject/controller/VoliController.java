@@ -50,4 +50,21 @@ public class VoliController {
         }
     }
 
+    @PostMapping("/crea")
+    public ResponseEntity<?> creaVolo(@RequestBody Volo volo){
+        try {
+            if (!volo.getPartenza().equals(volo.getArrivo())){
+                Volo voloCreato = voliService.creaVolo(volo);
+                return ResponseEntity.status(HttpStatus.OK).body(voloCreato);
+            }else {
+                log.error("Partenza e destinazione uguali");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            }
+        } catch (Exception e) {
+            log.error("Error in creaVolo: ",e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+        }
+
+    }
+
 }
