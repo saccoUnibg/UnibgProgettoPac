@@ -13,31 +13,36 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     UtenteRepository utenteRepository;
+
     public Utente saveRegistrazione(Utente utente) throws Exception {
         UtenteEntity utenteEntity = new UtenteEntity();
-        try{
-            BeanUtils.copyProperties(utente,utenteEntity);
+        try {
+            BeanUtils.copyProperties(utente, utenteEntity);
             utenteEntity = utenteRepository.save(utenteEntity);
 
-            BeanUtils.copyProperties(utenteEntity,utente);
+            BeanUtils.copyProperties(utenteEntity, utente);
             return utente;
 
         } catch (DataIntegrityViolationException e) {
-            if(utenteRepository.findByMail(utenteEntity.getMail()) !=null) {
-                throw new DataIntegrityViolationException("Errore nella registrazione dell'utenza: mail già registrata.") ;
+            if (utenteRepository.findByMail(utenteEntity.getMail()) != null) {
+                throw new DataIntegrityViolationException("Errore nella registrazione dell'utenza: mail già registrata.");
             } else {
                 throw new Exception("Errore nella registrazione dell'utenza: contattare assistenza.");
             }
         }
     }
 
-    public Utente login(Utente utente){
+    public Utente login(Utente utente) {
         UtenteEntity utenteEntity = utenteRepository.findByMailAndPsw(utente.getMail(), utente.getPsw());
-        BeanUtils.copyProperties(utenteEntity,utente);
-        return utente;
+        if (utenteEntity != null) {
+            BeanUtils.copyProperties(utenteEntity, utente);
+            return utente;
+        } else {
+            return null;
+        }
     }
 
-    public Utente findByMail(String mail){
+    public Utente findByMail(String mail) {
         Utente utente = new Utente();
         UtenteEntity utenteEntity = utenteRepository.findByMail(mail);
         BeanUtils.copyProperties(utenteEntity, utente);

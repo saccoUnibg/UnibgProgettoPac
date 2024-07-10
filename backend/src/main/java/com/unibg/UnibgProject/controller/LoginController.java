@@ -23,7 +23,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.OK).body(utente);
 
         } catch (Exception e) {
-            log.error("Error in registrazioneForm: ",e);
+            log.error("Error in registrazioneForm: ", e);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
 
@@ -33,10 +33,10 @@ public class LoginController {
     public ResponseEntity<?> loginForm(@RequestBody Utente utente, HttpSession session) {
         try {
             if (session.getAttribute("mail") == null) {
-                log.info("login user "+utente.getMail());
+                log.info("login user " + utente.getMail());
                 utente = loginService.login(utente);
                 if (utente == null) {
-                    return null;
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
                 } else {
                     session.setAttribute("mail", utente.getMail());
                 }
@@ -46,21 +46,10 @@ public class LoginController {
             session.setAttribute("utente", utente);
             return ResponseEntity.status(HttpStatus.OK).body(utente);
         } catch (Exception e) {
-            log.error("Error in loginForm: ",e);
+            log.error("Error in loginForm: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
-
-//    @GetMapping("/profilehomepage")
-//    public String profileHome(Model model, HttpSession session) {
-//        if (!UtilsGeneric.isSessionActive(session)) {
-//            return "error";
-//        }
-//
-//        UtenteEntity utenteEntity = (UtenteEntity) session.getAttribute("utente");
-//        model.addAttribute("utente", utenteEntity);
-//        return "login/profilehomepage";
-//    }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
@@ -68,7 +57,7 @@ public class LoginController {
             session.invalidate();
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (IllegalStateException e) {
-            log.error("Error in logout: ",e);
+            log.error("Error in logout: ", e);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
     }

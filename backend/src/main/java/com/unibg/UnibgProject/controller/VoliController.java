@@ -64,7 +64,6 @@ public class VoliController {
             log.error("Error in creaVolo: ",e);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
-
     }
 
 }

@@ -16,12 +16,13 @@ public class AnagraficaServiceImpl implements AnagraficaService {
     UtenteRepository utenteRepository;
 
     @Override
-    public UtenteEntity modificaAnagrafica(Utente utente) {
+    public Utente modificaAnagrafica(Utente utente) {
         try {
             UtenteEntity utenteEntity = utenteRepository.findByMail(utente.getMail());
             BeanUtils.copyProperties(utente, utenteEntity);
-            utenteRepository.save(utenteEntity);
-            return utenteEntity;
+            utenteEntity = utenteRepository.save(utenteEntity);
+            BeanUtils.copyProperties(utenteEntity, utente);
+            return utente;
         } catch (Exception ex) {
             log.error("Error: ", ex);
         }
@@ -29,9 +30,10 @@ public class AnagraficaServiceImpl implements AnagraficaService {
     }
 
     @Override
-    public Boolean eliminaAnagrafica(UtenteEntity utente) {
+    public Boolean eliminaAnagrafica(Utente utente) {
         try {
-            utenteRepository.delete(utente);
+            UtenteEntity utenteEntity = utenteRepository.findByMail(utente.getMail());
+            utenteRepository.delete(utenteEntity);
             log.info("Utente eliminato con successo");
             return true;
         } catch (Exception ex) {
