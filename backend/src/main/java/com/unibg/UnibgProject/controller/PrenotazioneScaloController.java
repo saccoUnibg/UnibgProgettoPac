@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,7 @@ public class PrenotazioneScaloController {
     }
 
     @PostMapping("/success")
-    public ResponseEntity<?> saveCheckin(@ModelAttribute("checkinList") CheckinList checkinList, HttpSession session, Model model) {
+    public ResponseEntity<?> saveCheckin(@RequestBody CheckinList checkinList, HttpSession session, Model model) {
 
         try{
             String mail=(String) session.getAttribute("mail");
@@ -111,7 +112,7 @@ public class PrenotazioneScaloController {
     }
 
     @PostMapping("/elimina")
-    public String eliminaPrenotazione(@ModelAttribute("volo") Volo volo, HttpSession session, Model model){
+    public String eliminaPrenotazione(@RequestBody Volo volo, HttpSession session, Model model){
 
         // una volta confermato, cancello tutto ciò che è legato alla mail per quel id_volo (prenotazione + checkIn di ogni persona)
         Long idVolo = volo.getId();

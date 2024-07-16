@@ -10,7 +10,15 @@
                 <label>Aeroporto Arrivo</label> <br>
                 <input type="text" placeholder="Arrivo" name="arrivo" v-model="form.arrivo" size="40" required><br>
                 <label>Data</label> <br>
-                <input type="date" placeholder="Data" name="data" v-model="form.data" required>
+                <input type="date" placeholder="Data" name="data" v-model="form.data" required><br>
+                <input type="checkbox" name="scalo" v-model="form.scalo">
+                <label >Scalo</label><br>
+                <div v-if="form.scalo">
+                    <label>Scalo Minimo</label><br>
+                    <input type="number" placeholder="Scalo min" v-model="form.scalo_min" size="40" required><br>
+                    <label>Scalo Massimo</label><br>
+                    <input type="number" placeholder="Scalo Max" v-model="form.scalo_max" size="40" required><br>
+                </div>
                 <hr>
 
                 <button type="submit" >Cerca!</button>
@@ -23,7 +31,8 @@
 
     <h1>{{ message }}</h1>
 
-    <ListaVoli v-if="ricerca" :listaVoli="this.listaVoli"/>
+    <ListaVoli v-if="ricerca && !form.scalo" :listaVoli="this.listaVoli"/>
+    <ListaVoliScalo v-if="ricerca && form.scalo" :listaVoli="this.listaVoli"/>
 
     <div align="center">
         <button @click="this.$router.push('/ProfileHomePage')">Homepage</button>
@@ -33,12 +42,14 @@
 <script>
     import axios from 'axios'
     import ListaVoli from "./ListaVoli"
+    import ListaVoliScalo from "./ListaVoliScalo"
 
 
     export default {
         name: 'RicercaVoli',
         components: {
-            ListaVoli
+            ListaVoli,
+            ListaVoliScalo
         },
         data() {
             return {
@@ -47,7 +58,9 @@
                     partenza: '',
                     arrivo: '',
                     data: '',
-                    scalo: false
+                    scalo: false,
+                    scalo_min: 10,
+                    scalo_max: 30
                 },
                 ricerca: false,
                 listaVoli: []
@@ -55,7 +68,6 @@
         },
         methods:{
             async cerca(){
-                console.log("Cercando");
                 this.message = "Ricerca voli in corso..."
                 axios.get('http://localhost:8080/voli/lista', {params : this.form})
                 .then(response => {

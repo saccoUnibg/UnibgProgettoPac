@@ -1,8 +1,34 @@
 <template>
     <div>
         <form @submit.prevent="checkIn()">
-            <div class="container" align="center">
-                <h1>Prenotazione</h1>
+            <h1>Prenotazione</h1>
+            <div v-if="scalo" class="container" align="center">
+                <b>Partenza: </b>
+                <i>{{volo.object1.partenza}}</i>
+                <br><br>
+                <b>Arrivo: </b>
+                <i>{{volo.object1.arrivo}}</i>
+                <br><br>
+                <b>Compagnia: </b>
+                <i>{{volo.object1.compagnia}}</i>
+                <br><br>
+
+                <b>Partenza: </b>
+                <i>{{volo.object2.partenza}}</i>
+                <br><br>
+                <b>Arrivo: </b>
+                <i>{{volo.object2.arrivo}}</i>
+                <br><br>
+                <b>Compagnia: </b>
+                <i>{{volo.object2.compagnia}}</i>
+                <br><br>
+
+                <b>Prezzo: </b>
+                <i>{{(parseInt(volo.object1.prezzo) + parseInt(volo.object2.prezzo)) * numero_biglietti}}</i>
+                <br><br>
+                <hr>
+            </div>
+            <div v-else>
                 <b>Partenza: </b>
                 <i>{{volo.partenza}}</i>
                 <br><br>
@@ -39,16 +65,18 @@
         data()  {
             return {
                 numero_biglietti: 1,
+                scalo: false,
                 volo: null
             }
         },
         created() {
             console.log("CreaPrenotazione");
             this.volo = JSON.parse(localStorage.getItem('voloDaPrenotare'));
+            this.scalo = this.$route.query.scalo ?? false;
         },
         methods: {
             async checkIn() {
-                axios.post('http://localhost:8080/prenotazioni/check-in', {id:"0", idVolo: this.volo.id, numero_biglietti: this.numero_biglietti, mail:"0", spesa_totale: this.volo.prezzo * this.numero_biglietti})
+                axios.post('http://localhost:8080/'+(this.scalo?'prenotazioniScalo':'prenotazioni')+'/check-in', {id:"0", idVolo: this.volo.id, numero_biglietti: this.numero_biglietti, mail:"0", spesa_totale: this.volo.prezzo * this.numero_biglietti})
                 .then(response => {
                           console.log(response);
                           this.checkInToConfirm(response.data);

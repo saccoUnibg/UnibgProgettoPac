@@ -55,14 +55,14 @@ export default {
                     .then(response => {
                               console.log(response);
                               this.$router.push({
-                                      name: 'RegistrazioneSuccess'
+                                      name: 'SingUpSuccess'
                                   })
                               .catch(error => console.error(error));
                             })
                     .catch(error => {
                         console.error(error);
                         this.$router.push({
-                            name: 'RegistrazioneFail'
+                            name: 'SingUpFail'
                             })
                         .catch(error => console.error(error));
                     });
