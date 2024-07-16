@@ -14,6 +14,7 @@ import VisualizzaPrenotazioni from './components/prenotazione/VisualizzaPrenotaz
 import EliminaPrenotazione from './components/prenotazione/EliminaPrenotazione.vue';
 import EliminaSuccess from './components/prenotazione/EliminaPrenotazioneSuccess.vue';
 import CheckIn from './components/prenotazione/CheckIn.vue';
+import CheckInSuccess from './components/prenotazione/CheckInSuccess.vue';
 import CreaPrenotazione from './components/prenotazione/CreaPrenotazione.vue';
 
 const router = createRouter({
@@ -81,17 +82,22 @@ const router = createRouter({
             path: '/eliminaPrenotazioneSuccess',
             name: 'EliminaSuccess',
             component: EliminaSuccess
-        }
-        ,{
+        },
+        {
             path: '/creaPrenotazione',
             name: 'CreaPrenotazione',
             component: CreaPrenotazione
-        }
-        ,{
+        },
+        {
             path: '/checkIn',
             name: 'CheckIn',
             component: CheckIn
-        }
+        },
+        {
+            path: '/checkInSuccess',
+            name: 'CheckInSuccess',
+            component: CheckInSuccess
+        },
 
 
     ]

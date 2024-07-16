@@ -12,10 +12,10 @@
                 </thead>
                 <tbody>
                 <tr v-for="checkin in checkinList" :key="checkin">
-                    <td><input type="text" :value="checkin.nome" required/></td>
-                    <td><input type="text" :value="checkin.cognome" required/></td>
-                    <td><input type="text" :value="checkin.cf" required/></td>
-                    <td><input type="text" :value="checkin.id_documento" required/></td>
+                    <td><input type="text" v-model="checkin.nome" required/></td>
+                    <td><input type="text" v-model="checkin.cognome" required/></td>
+                    <td><input type="text" v-model="checkin.cf" required/></td>
+                    <td><input type="text" v-model="checkin.id_documento" required/></td>
                 </tr>
                 </tbody>
             </table>
@@ -48,6 +48,7 @@
                     cognome: '',
                     cf: '',
                     id_documento: '',
+                    idPrenotazione: '',
                 });
             }
             console.log(this.checkInCount);
@@ -55,7 +56,7 @@
         },
         methods: {
             async checkInConfirm() {
-                this.axios.post('/prenotazioni/success', this.checkinList)
+                this.axios.post('/prenotazioni/success', {checkinList:this.checkinList})
                 .then(response => {
                           console.log(response);
                           this.checkInConfirmed(response.data);
@@ -66,11 +67,10 @@
             },
             checkInConfirmed(response){
                 console.log(response);
-//                this.$router.push({
-//                    name: 'CheckIn',
-//                    query: { checkInCount: response.checkinList.length}
-//                })
-//                .catch(error => console.error(error));
+                this.$router.push({
+                    name: 'CheckInSuccess'
+                })
+                .catch(error => console.error(error));
             }
         }
     }
