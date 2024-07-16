@@ -133,7 +133,7 @@ public class VoliServiceImpl implements VoliService {
             scaliVolo1.add(temp.getArrivo());
         }
 
-        // Voli da S a A
+        // Voli da S a P
         List<VoloEntity> scaloToArrivoListEntity = voliRepository.findByArrivoIgnoreCaseAndData(ricerca.getArrivo(), ricerca.getData());
 
         List<Volo> scaloToArrivoList = new ArrayList<>();
