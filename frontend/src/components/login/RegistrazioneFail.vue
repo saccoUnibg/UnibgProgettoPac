@@ -1,6 +1,5 @@
 <template>
-    <p>Errore nella registrazione: </p>
-    <ul th:text="${error}"></ul>
+    <h1>Errore nella registrazione</h1>
 </template>
 
 <script>
@@ -8,8 +7,8 @@ export default {
     name: 'SingUpFail',
     created() {
       setTimeout(() => {
-          this.$router.push("/"); //aspetta 2 secondi poi torna in homepage
-      }, 2000);
+          this.$router.push("/"); //aspetta 5 secondi poi torna in homepage
+      }, 5000);
     }
 }
 </script>

@@ -72,7 +72,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
     public void deletePrenotazione(String idPrenotazione) {
         prenotazioneRepository.deleteById(Integer.valueOf(idPrenotazione));
         this.deleteCheckin(idPrenotazione);
-
     }
 
 }

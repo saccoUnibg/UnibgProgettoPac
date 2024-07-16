@@ -8,7 +8,7 @@ const app = createApp(App)
     .use(router);
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.axios = axios;
 
 app.mount('#app');
