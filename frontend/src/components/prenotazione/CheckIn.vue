@@ -29,8 +29,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         props: {
 
@@ -57,7 +55,7 @@
         },
         methods: {
             async checkInConfirm() {
-                axios.post('http://localhost:8080/prenotazioni/success', this.checkinList)
+                this.axios.post('/prenotazioni/success', this.checkinList)
                 .then(response => {
                           console.log(response);
                           this.checkInConfirmed(response.data);

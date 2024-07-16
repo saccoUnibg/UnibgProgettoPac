@@ -45,12 +45,12 @@ public class PrenotazioneScaloController {
         try{
             //Imposto id_voli nella prenotazione (preso da session) CONCATENATI e li salvo separati da una ";"
 
-            String idVolo1 = (String) session.getAttribute("id_volo1");
-            String idVolo2 = (String) session.getAttribute("id_volo2");
+            String idVolo1 = session.getAttribute("id_volo1").toString();
+            String idVolo2 = session.getAttribute("id_volo2").toString();
 
             prenotazione.setIdVolo(idVolo1.concat(";").concat(idVolo2));
 
-            prenotazione.setMail((String) session.getAttribute("mail"));
+            prenotazione.setMail(session.getAttribute("mail").toString());
             prenotazione = prenotazioneService.savePrenotazione(prenotazione);
 
             //salvo in sessione id_prenotazione
@@ -76,7 +76,7 @@ public class PrenotazioneScaloController {
 
         try{
             String mail=(String) session.getAttribute("mail");
-            String idPrenotazione = (String) session.getAttribute("id_prenotazione");
+            String idPrenotazione = session.getAttribute("id_prenotazione").toString();
             prenotazioneService.saveCheckin(checkinList.getCheckinList(),mail,idPrenotazione);
             Utente utente = loginService.findByMail(mail);
             return ResponseEntity.status(HttpStatus.OK).body(utente);
@@ -91,7 +91,7 @@ public class PrenotazioneScaloController {
         try{
             //Ottengo lista delle prenotazioni effettuate da una utenza via mail
             List<Prenotazione> prenotazioneList =
-                    prenotazioneService.getVoliPrenotatiByMail((String)session.getAttribute("mail"));
+                    prenotazioneService.getVoliPrenotatiByMail(session.getAttribute("mail").toString());
 
             // Ottengo i dettagli dei voli delle prenotazioni effettuate
             List<Volo> listaVoli =
@@ -126,7 +126,7 @@ public class PrenotazioneScaloController {
     public String confermaEliminaPrenotazione(HttpSession session,Model model){
         try{
             // 1. recupero informazioni dalla sessione
-            String idVolo = (String) session.getAttribute("id_volo");
+            String idVolo = session.getAttribute("id_volo").toString();
 
             // chiave: idPrenotazione ; valore: idVolo
             Map<String,String> idPrenotazioniAndVoli = (HashMap<String,String>) session.getAttribute("idPrenotazioniAndVoli");

@@ -40,7 +40,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import ListaVoli from "./ListaVoli"
     import ListaVoliScalo from "./ListaVoliScalo"
 
@@ -69,7 +68,7 @@
         methods:{
             async cerca(){
                 this.message = "Ricerca voli in corso..."
-                axios.get('http://localhost:8080/voli/lista', {params : this.form})
+                this.axios.get('/voli/lista', {params : this.form})
                 .then(response => {
                             this.ricerca = true;
                             console.log(response);

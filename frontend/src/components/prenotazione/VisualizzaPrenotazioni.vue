@@ -47,8 +47,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         name: 'VisualizzaPrenotazioni',
         data()  {
@@ -58,7 +56,7 @@
         },
         created() {
             console.log("VisualizzaPrenotazioni");
-            axios.get('http://localhost:8080/prenotazioni/visualizza')
+            this.axios.get('/prenotazioni/visualizza')
                 .then(response => {
                           console.log(response);
                           this.listaVoli = response.data;
@@ -69,7 +67,7 @@
         },
         methods: {
             async elimina(volo) {
-                axios.post('http://localhost:8080/prenotazioni/elimina', volo)
+                this.axios.post('/prenotazioni/elimina', volo)
                 .then(response => {
                           console.log(response);
                           this.eliminaConferma(volo);

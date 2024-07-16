@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
     name: 'ModificaAnagrafica',
     data() {
@@ -49,7 +47,7 @@ export default {
         async modificaAnagrafica() {
             if (this.form.psw === this.psw_repeat)
             {
-                axios.post('http://localhost:8080/anagrafica/modifica', this.form)
+                this.axios.post('/anagrafica/modifica', this.form)
                     .then(response => {
                               console.log(response);
                               this.$router.push({

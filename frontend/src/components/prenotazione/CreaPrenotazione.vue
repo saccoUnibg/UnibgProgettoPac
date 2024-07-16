@@ -59,8 +59,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         data()  {
             return {
@@ -76,7 +74,7 @@
         },
         methods: {
             async checkIn() {
-                axios.post('http://localhost:8080/'+(this.scalo?'prenotazioniScalo':'prenotazioni')+'/check-in', {id:"0", idVolo: this.volo.id, numero_biglietti: this.numero_biglietti, mail:"0", spesa_totale: this.volo.prezzo * this.numero_biglietti})
+                this.axios.post('/'+(this.scalo?'prenotazioniScalo':'prenotazioni')+'/check-in', {id:"0", idVolo: this.volo.id, numero_biglietti: this.numero_biglietti, mail:"0", spesa_totale: this.volo.prezzo * this.numero_biglietti})
                 .then(response => {
                           console.log(response);
                           this.checkInToConfirm(response.data);

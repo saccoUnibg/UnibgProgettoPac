@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
     name: 'SingUpPage',
     data() {
@@ -51,7 +50,7 @@ export default {
         async singup() {
             if (this.form.psw === this.psw_repeat)
             {
-                axios.post('http://localhost:8080/registrazioneform', this.form)
+                this.axios.post('/registrazioneform', this.form)
                     .then(response => {
                               console.log(response);
                               this.$router.push({

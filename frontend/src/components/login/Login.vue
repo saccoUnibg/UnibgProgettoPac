@@ -18,8 +18,6 @@
 
 
 <script>
-import axios from 'axios'
-
 export default {
     name: 'LoginPage',
     data() {
@@ -35,7 +33,7 @@ export default {
     methods: {
         async login() {
             this.message = "Caricamento...";
-            axios.post('http://localhost:8080/login', this.form)
+            this.axios.post('/login', this.form)
             .then(response => {
                       console.log(response);
                       this.message = response.data.nome;

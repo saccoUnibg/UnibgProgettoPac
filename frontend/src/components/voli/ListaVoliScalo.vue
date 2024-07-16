@@ -57,8 +57,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         name: 'ListaVoli',
         props: {
@@ -66,7 +64,7 @@
         },
         methods: {
             async prenota(volo) {
-                axios.post('http://localhost:8080/prenotazioniScalo/crea', volo)
+                this.axios.post('/prenotazioniScalo/crea', volo)
                 .then(response => {
                           console.log(response);
                           this.creaPrenotaSuccess(volo);

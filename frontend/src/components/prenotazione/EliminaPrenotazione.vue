@@ -35,8 +35,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         name: 'EliminaPrenotazione',
         data()  {
@@ -50,7 +48,7 @@
         },
         methods: {
             async eliminaConferma(volo) {
-                axios.post('http://localhost:8080/prenotazioni/elimina/conferma', volo)
+                this.axios.post('/prenotazioni/elimina/conferma', volo)
                 .then(response => {
                           console.log(response);
                           localStorage.removeItem("voloDaEliminare");
