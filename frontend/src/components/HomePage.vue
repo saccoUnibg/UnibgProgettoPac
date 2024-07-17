@@ -1,6 +1,6 @@
 <template>
     <div align="center">
-        <h1 @click="this.$router.push('/')">Homepage</h1><br><br>
+        <h1 @click="this.$router.push('/')">Uniflight</h1><br><br>
         <hr>
         <button @click="this.$router.push('/singup')">Registrazione</button>
         <br><br>

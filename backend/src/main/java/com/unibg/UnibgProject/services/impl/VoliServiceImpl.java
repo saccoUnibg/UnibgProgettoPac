@@ -88,7 +88,13 @@ public class VoliServiceImpl implements VoliService {
         List<Long> idVoloList = new ArrayList<>();
 
         for (Prenotazione temp : listaPrenotazioni) {
-            idVoloList.add(Long.valueOf(temp.getIdVolo()));
+            if(temp.getIdVolo().contains(";")){
+                String [] idVoli = temp.getIdVolo().split(";");
+                idVoloList.add(Long.valueOf(idVoli[0]));
+                idVoloList.add(Long.valueOf(idVoli[1]));
+            }else {
+                idVoloList.add(Long.valueOf(temp.getIdVolo()));
+            }
         }
         List<VoloEntity> voloEntityList = voliRepository.findByIdIn(idVoloList);
 
