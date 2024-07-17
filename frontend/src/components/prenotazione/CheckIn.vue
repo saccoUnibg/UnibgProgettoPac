@@ -36,12 +36,14 @@
         data()  {
             return {
                 checkInCount: Number,
+                scalo: false,
                 checkinList: [],
             }
         },
         created() {
             console.log("Check In");
             this.checkInCount = this.$route.query.checkInCount;
+            this.scalo = this.$route.query.scalo ?? false;
             for (let i = 0; i < this.checkInCount; i++) {
                 this.checkinList.push({
                     nome: '',
@@ -56,7 +58,7 @@
         },
         methods: {
             async checkInConfirm() {
-                this.axios.post('/prenotazioni/success', {checkinList:this.checkinList})
+                this.axios.post('/'+(this.scalo?'prenotazioniScalo':'prenotazioni')+'/success', {checkinList:this.checkinList})
                 .then(response => {
                           console.log(response);
                           this.checkInConfirmed(response.data);

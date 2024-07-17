@@ -88,7 +88,7 @@
                 console.log(response.checkinList.length);
                 this.$router.push({
                     name: 'CheckIn',
-                    query: { checkInCount: response.checkinList.length}
+                    query: { checkInCount: response.checkinList.length, scalo: true}
                 })
                 .catch(error => console.error(error));
             }

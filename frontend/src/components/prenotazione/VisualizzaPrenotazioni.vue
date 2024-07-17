@@ -4,7 +4,7 @@
         <h3>Da qui puoi vedere e cancellare le prenotazioni effettuate</h3> <br> <br> <hr>
     </div>
 
-    <table align="center">
+    <table align="center" class="table table-bordered">
         <thead>
         <tr>
             <th>Data</th>

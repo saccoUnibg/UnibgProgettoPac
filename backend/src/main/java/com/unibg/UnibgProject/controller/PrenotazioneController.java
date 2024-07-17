@@ -65,7 +65,7 @@ public class PrenotazioneController {
     public ResponseEntity<?> saveCheckin(@RequestBody CheckinList checkinList, HttpSession session) {
         try {
             String mail = (String) session.getAttribute("mail");
-            String idPrenotazione = (String) session.getAttribute("id_prenotazione");
+            String idPrenotazione = session.getAttribute("id_prenotazione").toString();
             prenotazioneService.saveCheckin(checkinList.getCheckinList(), mail, idPrenotazione);
             Utente utente = loginService.findByMail(mail);
             return ResponseEntity.status(HttpStatus.OK).body(utente);
@@ -80,7 +80,7 @@ public class PrenotazioneController {
         try {
             //Ottengo lista delle prenotazioni effettuate da una utenza via mail
             List<Prenotazione> prenotazioneList =
-                    prenotazioneService.getVoliPrenotatiByMail((String) session.getAttribute("mail"));
+                    prenotazioneService.getVoliPrenotatiByMail(session.getAttribute("mail").toString());
 
             // Ottengo i dettagli dei voli delle prenotazioni effettuate
             List<Volo> listaVoli =
@@ -89,7 +89,9 @@ public class PrenotazioneController {
             // Mappa con associazione id volo e id prenotazione per non doverlo recuperare dopo da db con altre queries
             Map<String, String> idPrenotazioniAndVoli = new HashMap<>();
             for (Prenotazione temp : prenotazioneList) {
-                idPrenotazioniAndVoli.put(temp.getIdVolo(), temp.getId());
+                for (String voloID: temp.getIdVolo().split(";")){
+                    idPrenotazioniAndVoli.put(voloID, temp.getId());
+                }
             }
             session.setAttribute("idPrenotazioniAndVoli", idPrenotazioniAndVoli);
 
