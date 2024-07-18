@@ -1,6 +1,7 @@
 package com.unibg.UnibgProject.controller;
 
 import com.unibg.UnibgProject.model.*;
+import com.unibg.UnibgProject.utils.Coppia;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,51 @@ public class PrenotazioneControllerTest {
         HttpEntity<?> saveCheckInRequest = new HttpEntity<>(checkinList, headers);
         response = template.exchange("/prenotazioni/success", HttpMethod.POST, saveCheckInRequest, Utente.class);
         assert response.getStatusCode().is2xxSuccessful();
+    }
 
+    @Test
+    void givenPrenotazioneScalo_whenCheckIn_ThenSuccessAndSaveCheckIn()
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+        Utente utenteTemp = new Utente();
+        utenteTemp.setMail("mail");
+        utenteTemp.setPsw("psw");
+
+        HttpEntity<Utente> loginRequest = new HttpEntity<>(utenteTemp, headers);
+        ResponseEntity<?> response = template.exchange("/login", HttpMethod.POST, loginRequest, Utente.class);
+        assert response.getStatusCode().is2xxSuccessful();
+        List<String> coockies = response.getHeaders().get("Set-Cookie");
+        headers.put(HttpHeaders.COOKIE, coockies); // Necessario per avere la stessa Session ID
+
+        Volo primoVolo = new Volo();
+        primoVolo.setId(143l);
+        Volo secondoVolo = new Volo();
+        secondoVolo.setId(140l);
+        Coppia<Volo,Volo> coppiaVoli = new Coppia<>(primoVolo,secondoVolo);
+
+        HttpEntity<Coppia<Volo,Volo>> prenotazioneRequest = new HttpEntity<>(coppiaVoli, headers);
+        response = template.exchange("/prenotazioniScalo/crea", HttpMethod.POST, prenotazioneRequest, String.class);
+        assert response.getStatusCode().is2xxSuccessful();
+
+        Prenotazione prenotazione = new Prenotazione();
+        prenotazione.setNumero_biglietti("2");
+        prenotazione.setSpesa_totale("50");
+
+        HttpEntity<Prenotazione> checkinRequest = new HttpEntity<>(prenotazione, headers);
+        response = template.exchange("/prenotazioniScalo/check-in", HttpMethod.POST, checkinRequest, CheckinList.class);
+        assert response.getStatusCode().is2xxSuccessful();
+
+        CheckinList checkinList = (CheckinList) response.getBody();
+        List<Checkin> checkins = checkinList.getCheckinList();
+        for (int i = 0; i < checkinList.getCheckinList().size(); i++) {
+            checkins.get(i).setNome("nomeTEST" + i);
+            checkins.get(i).setCognome("cognomeTEST" + i);
+        }
+
+        HttpEntity<?> saveCheckInRequest = new HttpEntity<>(checkinList, headers);
+        response = template.exchange("/prenotazioniScalo/success", HttpMethod.POST, saveCheckInRequest, Utente.class);
+        assert response.getStatusCode().is2xxSuccessful();
     }
 }
